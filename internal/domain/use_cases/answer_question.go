@@ -28,7 +28,7 @@ func NewDefaultAnswerQuestionUseCase(answersRepository repositories.RepositoryIn
 func (uc *DefaultAnswerQuestionUseCase) Execute(input AnswerQuestionUseCaseInput) (entities.Answer, error) {
 	newAnswer := entities.NewAnswer(input.Content, input.InstructorID, input.QuestionID)
 
-	uc.AnswersRepository.Create(*newAnswer)
+	uc.AnswersRepository.Create(newAnswer)
 
 	return *newAnswer, nil
 }

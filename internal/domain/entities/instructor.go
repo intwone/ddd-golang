@@ -1,25 +1,28 @@
 package entities
 
 import (
-	uuid "github.com/satori/go.uuid"
+	vo "github.com/intwone/ddd-golang/internal/domain/entities/value_objects"
 )
 
 type Instructor struct {
-	ID   *string
-	Name string
+	id   *vo.UniqueID
+	name string
 }
 
 func NewInstructor(name string, id ...string) *Instructor {
-	instructor := &Instructor{
-		Name: name,
+	instructor := Instructor{
+		name: name,
 	}
 
 	if len(id) > 0 {
-		instructor.ID = &id[0]
+		instructor.id = vo.NewUniqueID(id[0])
 	} else {
-		generatedId := uuid.NewV4().String()
-		instructor.ID = &generatedId
+		instructor.id = vo.NewUniqueID()
 	}
 
-	return instructor
+	return &instructor
+}
+
+func (i *Instructor) GetName() string {
+	return i.name
 }

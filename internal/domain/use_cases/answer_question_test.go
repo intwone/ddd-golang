@@ -13,7 +13,7 @@ func TestAnswerQuestionUseCase_Execute(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	t.Run("create an answer", func(t *testing.T) {
+	t.Run("should create an answer", func(t *testing.T) {
 		repo := mock.NewMockRepositoryInterface(ctrl)
 		repo.EXPECT().Create(gomock.Any()).AnyTimes()
 		useCase := uc.NewDefaultAnswerQuestionUseCase(repo)
@@ -27,6 +27,6 @@ func TestAnswerQuestionUseCase_Execute(t *testing.T) {
 		answerQuestion, err := useCase.Execute(input)
 
 		require.Nil(t, err)
-		require.Equal(t, answerQuestion.Content, input.Content)
+		require.Equal(t, answerQuestion.GetContent(), input.Content)
 	})
 }

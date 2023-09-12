@@ -35,7 +35,7 @@ func (m *MockRepositoryInterface) EXPECT() *MockRepositoryInterfaceMockRecorder 
 }
 
 // Create mocks base method.
-func (m *MockRepositoryInterface) Create(answer entities.Answer) {
+func (m *MockRepositoryInterface) Create(answer *entities.Answer) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Create", answer)
 }
