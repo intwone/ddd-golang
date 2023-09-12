@@ -1,10 +1,10 @@
-package entities
+package enterprise
 
 import (
 	"strings"
 	"time"
 
-	vo "github.com/intwone/ddd-golang/internal/domain/entities/value_objects"
+	vo "github.com/intwone/ddd-golang/internal/domain/forum/enterprise/value_objects"
 )
 
 type Answer struct {

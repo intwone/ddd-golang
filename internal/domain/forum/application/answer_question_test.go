@@ -1,10 +1,10 @@
-package usecases_test
+package application_test
 
 import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	uc "github.com/intwone/ddd-golang/internal/domain/use_cases"
+	uc "github.com/intwone/ddd-golang/internal/domain/forum/application"
 	mock "github.com/intwone/ddd-golang/internal/test/mocks"
 	"github.com/stretchr/testify/require"
 )

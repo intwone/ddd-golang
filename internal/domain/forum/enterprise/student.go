@@ -1,6 +1,6 @@
-package entities
+package enterprise
 
-import vo "github.com/intwone/ddd-golang/internal/domain/entities/value_objects"
+import vo "github.com/intwone/ddd-golang/internal/domain/forum/enterprise/value_objects"
 
 type Student struct {
 	id   *vo.UniqueID

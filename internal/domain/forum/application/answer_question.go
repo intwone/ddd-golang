@@ -1,8 +1,8 @@
-package usecases
+package application
 
 import (
-	"github.com/intwone/ddd-golang/internal/domain/entities"
-	"github.com/intwone/ddd-golang/internal/domain/repositories"
+	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
+	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 )
 
 type AnswerQuestionUseCaseInput struct {
@@ -12,7 +12,7 @@ type AnswerQuestionUseCaseInput struct {
 }
 
 type AnswerQuestionUseCaseInterface interface {
-	Execute(input AnswerQuestionUseCaseInput) (entities.Answer, error)
+	Execute(input AnswerQuestionUseCaseInput) (enterprise.Answer, error)
 }
 
 type DefaultAnswerQuestionUseCase struct {
@@ -25,8 +25,8 @@ func NewDefaultAnswerQuestionUseCase(answersRepository repositories.RepositoryIn
 	}
 }
 
-func (uc *DefaultAnswerQuestionUseCase) Execute(input AnswerQuestionUseCaseInput) (entities.Answer, error) {
-	newAnswer := entities.NewAnswer(input.Content, input.InstructorID, input.QuestionID)
+func (uc *DefaultAnswerQuestionUseCase) Execute(input AnswerQuestionUseCaseInput) (enterprise.Answer, error) {
+	newAnswer := enterprise.NewAnswer(input.Content, input.InstructorID, input.QuestionID)
 
 	uc.AnswersRepository.Create(newAnswer)
 
