@@ -3,15 +3,17 @@ package entities
 import uuid "github.com/satori/go.uuid"
 
 type Question struct {
-	ID      *string
-	Title   string
-	Content string
+	ID       *string
+	Title    string
+	Content  string
+	AuthorID string
 }
 
-func NewQuestion(title string, content string, id ...string) *Question {
+func NewQuestion(title string, content string, authorId string, id ...string) *Question {
 	question := &Question{
-		Title:   title,
-		Content: content,
+		Title:    title,
+		Content:  content,
+		AuthorID: authorId,
 	}
 
 	if len(id) > 0 {

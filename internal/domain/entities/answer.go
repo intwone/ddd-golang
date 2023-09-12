@@ -5,13 +5,17 @@ import (
 )
 
 type Answer struct {
-	ID      *string
-	Content string
+	ID         *string
+	Content    string
+	AuthorID   string
+	QuestionID string
 }
 
-func NewAnswer(content string, id ...string) *Answer {
+func NewAnswer(content string, authorID string, questionID string, id ...string) *Answer {
 	answer := &Answer{
-		Content: content,
+		Content:    content,
+		AuthorID:   authorID,
+		QuestionID: questionID,
 	}
 
 	if len(id) > 0 {
