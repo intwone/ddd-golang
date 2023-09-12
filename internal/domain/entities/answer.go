@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"strings"
 	"time"
 
 	vo "github.com/intwone/ddd-golang/internal/domain/entities/value_objects"
@@ -42,4 +43,24 @@ func (a *Answer) GetAuthorID() vo.UniqueID {
 
 func (a *Answer) GetQuestionID() vo.UniqueID {
 	return *a.questionID
+}
+
+func (a *Answer) GetExcerpt() string {
+	maxLength := 117
+
+	if len(a.content) > maxLength {
+		return strings.TrimRight(a.content[:maxLength], " ") + "..."
+	}
+
+	return a.content
+}
+
+func (a *Answer) SetContent(content string) {
+	a.content = content
+	a.update()
+}
+
+func (a *Answer) update() {
+	now := time.Now()
+	a.updatedAt = &now
 }
