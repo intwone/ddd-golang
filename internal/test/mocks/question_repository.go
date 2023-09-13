@@ -35,15 +35,46 @@ func (m *MockQuestionRepositoryInterface) EXPECT() *MockQuestionRepositoryInterf
 }
 
 // Create mocks base method.
-func (m *MockQuestionRepositoryInterface) Create(question *enterprise.Question) {
+func (m *MockQuestionRepositoryInterface) Create(question *enterprise.Question) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Create", question)
+	ret := m.ctrl.Call(m, "Create", question)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Create indicates an expected call of Create.
 func (mr *MockQuestionRepositoryInterfaceMockRecorder) Create(question interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).Create), question)
+}
+
+// DeleteByID mocks base method.
+func (m *MockQuestionRepositoryInterface) DeleteByID(id string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByID", id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteByID indicates an expected call of DeleteByID.
+func (mr *MockQuestionRepositoryInterfaceMockRecorder) DeleteByID(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByID", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).DeleteByID), id)
+}
+
+// GetByID mocks base method.
+func (m *MockQuestionRepositoryInterface) GetByID(id string) (enterprise.Question, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByID", id)
+	ret0, _ := ret[0].(enterprise.Question)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByID indicates an expected call of GetByID.
+func (mr *MockQuestionRepositoryInterfaceMockRecorder) GetByID(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).GetByID), id)
 }
 
 // GetBySlug mocks base method.

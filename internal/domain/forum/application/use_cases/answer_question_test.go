@@ -24,9 +24,9 @@ func TestAnswerQuestionUseCase_Execute(t *testing.T) {
 			Content:      "Content",
 		}
 
-		answerQuestion, err := useCase.Execute(input)
+		result, err := useCase.Execute(input)
 
 		require.Nil(t, err)
-		require.Equal(t, answerQuestion.GetContent(), input.Content)
+		require.Equal(t, result.GetContent(), input.Content)
 	})
 }

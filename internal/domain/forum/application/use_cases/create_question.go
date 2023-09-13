@@ -28,7 +28,11 @@ func NewDefaultCreateQuestionUseCase(questionRepository repositories.QuestionRep
 func (uc *DefaultCreateQuestionUseCase) Execute(input CreateQuestionUseCaseInput) (enterprise.Question, error) {
 	newQuestion := enterprise.NewQuestion(input.Title, input.Content, input.AuthorID)
 
-	uc.QuestionRepository.Create(newQuestion)
+	err := uc.QuestionRepository.Create(newQuestion)
+
+	if err != nil {
+		return enterprise.Question{}, err
+	}
 
 	return *newQuestion, nil
 }
