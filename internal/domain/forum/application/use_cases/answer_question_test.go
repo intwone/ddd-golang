@@ -1,10 +1,10 @@
-package application_test
+package use_cases_test
 
 import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	uc "github.com/intwone/ddd-golang/internal/domain/forum/application"
+	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	mock "github.com/intwone/ddd-golang/internal/test/mocks"
 	"github.com/stretchr/testify/require"
 )
@@ -14,7 +14,7 @@ func TestAnswerQuestionUseCase_Execute(t *testing.T) {
 	defer ctrl.Finish()
 
 	t.Run("should create an answer", func(t *testing.T) {
-		repo := mock.NewMockRepositoryInterface(ctrl)
+		repo := mock.NewMockAnswerRepositoryInterface(ctrl)
 		repo.EXPECT().Create(gomock.Any()).AnyTimes()
 		useCase := uc.NewDefaultAnswerQuestionUseCase(repo)
 

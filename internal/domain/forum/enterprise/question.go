@@ -9,7 +9,7 @@ import (
 
 type Question struct {
 	id           *vo.UniqueID
-	slug         vo.Slug
+	slug         *vo.Slug
 	title        string
 	content      string
 	bestAnswerID *vo.UniqueID
@@ -18,14 +18,16 @@ type Question struct {
 	updatedAt    *time.Time
 }
 
-func NewQuestion(slug vo.Slug, title string, content string, authorId string, id ...string) *Question {
+func NewQuestion(title string, content string, authorId string, id ...string) *Question {
 	question := Question{
-		slug:      slug,
 		title:     title,
 		content:   content,
 		authorID:  vo.NewUniqueID(authorId),
 		createdAt: time.Now(),
 	}
+
+	slug := vo.NewSlug(title)
+	question.slug = &vo.Slug{Value: slug.CreateFromText()}
 
 	if len(id) > 0 {
 		question.id = vo.NewUniqueID(id[0])
@@ -37,7 +39,7 @@ func NewQuestion(slug vo.Slug, title string, content string, authorId string, id
 }
 
 func (q *Question) GetSlug() vo.Slug {
-	return q.slug
+	return *q.slug
 }
 
 func (q *Question) GetTitle() string {

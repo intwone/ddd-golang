@@ -2,6 +2,6 @@ package repositories
 
 import "github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 
-type RepositoryInterface interface {
+type AnswerRepositoryInterface interface {
 	Create(answer *enterprise.Answer)
 }

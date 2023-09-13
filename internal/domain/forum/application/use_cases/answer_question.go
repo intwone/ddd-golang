@@ -1,4 +1,4 @@
-package application
+package use_cases
 
 import (
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
@@ -16,10 +16,10 @@ type AnswerQuestionUseCaseInterface interface {
 }
 
 type DefaultAnswerQuestionUseCase struct {
-	AnswersRepository repositories.RepositoryInterface
+	AnswersRepository repositories.AnswerRepositoryInterface
 }
 
-func NewDefaultAnswerQuestionUseCase(answersRepository repositories.RepositoryInterface) *DefaultAnswerQuestionUseCase {
+func NewDefaultAnswerQuestionUseCase(answersRepository repositories.AnswerRepositoryInterface) *DefaultAnswerQuestionUseCase {
 	return &DefaultAnswerQuestionUseCase{
 		AnswersRepository: answersRepository,
 	}
