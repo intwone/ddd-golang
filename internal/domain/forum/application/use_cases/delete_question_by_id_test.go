@@ -23,7 +23,8 @@ func TestDeleteQuestionByIDUseCase_Execute(t *testing.T) {
 		useCase := uc.NewDefaultDeleteQuestionByIDUseCase(repo)
 
 		input := uc.DeleteQuestionByIDUseCaseInput{
-			ID: "1",
+			ID:       "1",
+			AuthorID: "1",
 		}
 
 		result := useCase.Execute(input)
@@ -32,18 +33,36 @@ func TestDeleteQuestionByIDUseCase_Execute(t *testing.T) {
 	})
 
 	t.Run("should not delete a question when not found question", func(t *testing.T) {
-		question := enterprise.NewQuestion("Title Test", "Content test", "1")
+		question := enterprise.Question{}
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*question, errors.New("any")).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(question, errors.New("any")).AnyTimes()
 		repo.EXPECT().DeleteByID(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteQuestionByIDUseCase(repo)
 
 		input := uc.DeleteQuestionByIDUseCaseInput{
-			ID: "1",
+			ID:       "1",
+			AuthorID: "1",
 		}
 
 		result := useCase.Execute(input)
 
 		require.NotNil(t, result)
+	})
+
+	t.Run("should not delete a question when the author is not the same one who created the question", func(t *testing.T) {
+		question := enterprise.NewQuestion("Title Test", "Content test", "1")
+		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
+		repo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		useCase := uc.NewDefaultDeleteQuestionByIDUseCase(repo)
+
+		input := uc.DeleteQuestionByIDUseCaseInput{
+			ID:       "1",
+			AuthorID: "2",
+		}
+
+		result := useCase.Execute(input)
+
+		require.NotNil(t, result)
+		require.Equal(t, "not allowed", result.Error())
 	})
 }

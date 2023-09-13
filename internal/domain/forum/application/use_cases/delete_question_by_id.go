@@ -1,11 +1,14 @@
 package use_cases
 
 import (
+	"errors"
+
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 )
 
 type DeleteQuestionByIDUseCaseInput struct {
-	ID string
+	ID       string
+	AuthorID string
 }
 
 type DeleteQuestionByIDUseCaseInterface interface {
@@ -23,10 +26,14 @@ func NewDefaultDeleteQuestionByIDUseCase(questionRepository repositories.Questio
 }
 
 func (uc *DefaultDeleteQuestionByIDUseCase) Execute(input DeleteQuestionByIDUseCaseInput) error {
-	_, err := uc.QuestionRepository.GetByID(input.ID)
+	question, err := uc.QuestionRepository.GetByID(input.ID)
 
 	if err != nil {
 		return err
+	}
+
+	if input.AuthorID != *question.GetAuthorID().Value {
+		return errors.New("not allowed")
 	}
 
 	uc.QuestionRepository.DeleteByID(input.ID)
