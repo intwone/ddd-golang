@@ -61,10 +61,10 @@ func (mr *MockAnswerRepositoryInterfaceMockRecorder) DeleteByID(id interface{}) 
 }
 
 // GetByID mocks base method.
-func (m *MockAnswerRepositoryInterface) GetByID(id string) (enterprise.Answer, error) {
+func (m *MockAnswerRepositoryInterface) GetByID(id string) (*enterprise.Answer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
-	ret0, _ := ret[0].(enterprise.Answer)
+	ret0, _ := ret[0].(*enterprise.Answer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -73,4 +73,18 @@ func (m *MockAnswerRepositoryInterface) GetByID(id string) (enterprise.Answer, e
 func (mr *MockAnswerRepositoryInterfaceMockRecorder) GetByID(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockAnswerRepositoryInterface)(nil).GetByID), id)
+}
+
+// Save mocks base method.
+func (m *MockAnswerRepositoryInterface) Save(answer *enterprise.Answer) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Save", answer)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Save indicates an expected call of Save.
+func (mr *MockAnswerRepositoryInterfaceMockRecorder) Save(answer interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockAnswerRepositoryInterface)(nil).Save), answer)
 }

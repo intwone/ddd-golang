@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
+	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 )
 
 type UpdateQuestionByIDUseCaseInput struct {
@@ -14,7 +15,7 @@ type UpdateQuestionByIDUseCaseInput struct {
 }
 
 type UpdateQuestionByIDUseCaseInterface interface {
-	Execute(input UpdateQuestionByIDUseCaseInput) error
+	Execute(input UpdateQuestionByIDUseCaseInput) (enterprise.Question, error)
 }
 
 type DefaultUpdateQuestionByIDUseCase struct {
@@ -27,21 +28,25 @@ func NewDefaultUpdateQuestionByIDUseCase(questionRepository repositories.Questio
 	}
 }
 
-func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseCaseInput) error {
+func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseCaseInput) (enterprise.Question, error) {
 	question, err := uc.QuestionRepository.GetByID(input.ID)
 
 	if err != nil {
-		return err
+		return enterprise.Question{}, err
 	}
 
 	if input.AuthorID != *question.GetAuthorID().Value {
-		return errors.New("not allowed")
+		return enterprise.Question{}, errors.New("not allowed")
 	}
 
 	question.SetTitle(input.Title)
 	question.SetContent(input.Content)
 
-	uc.QuestionRepository.Save(&question)
+	err = uc.QuestionRepository.Save(question)
 
-	return nil
+	if err != nil {
+		return enterprise.Question{}, err
+	}
+
+	return *question, nil
 }

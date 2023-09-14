@@ -63,10 +63,10 @@ func (mr *MockQuestionRepositoryInterfaceMockRecorder) DeleteByID(id interface{}
 }
 
 // GetByID mocks base method.
-func (m *MockQuestionRepositoryInterface) GetByID(id string) (enterprise.Question, error) {
+func (m *MockQuestionRepositoryInterface) GetByID(id string) (*enterprise.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
-	ret0, _ := ret[0].(enterprise.Question)
+	ret0, _ := ret[0].(*enterprise.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -78,10 +78,10 @@ func (mr *MockQuestionRepositoryInterfaceMockRecorder) GetByID(id interface{}) *
 }
 
 // GetBySlug mocks base method.
-func (m *MockQuestionRepositoryInterface) GetBySlug(slug string) (enterprise.Question, error) {
+func (m *MockQuestionRepositoryInterface) GetBySlug(slug string) (*enterprise.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBySlug", slug)
-	ret0, _ := ret[0].(enterprise.Question)
+	ret0, _ := ret[0].(*enterprise.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
