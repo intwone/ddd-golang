@@ -38,6 +38,10 @@ func NewQuestion(title string, content string, authorId string, id ...string) *Q
 	return &question
 }
 
+func (q *Question) GetID() vo.UniqueID {
+	return *q.id
+}
+
 func (q *Question) GetSlug() vo.Slug {
 	return *q.slug
 }

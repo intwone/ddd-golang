@@ -33,6 +33,10 @@ func NewAnswer(content string, authorID string, questionID string, id ...string)
 	return &answer
 }
 
+func (a *Answer) GetID() vo.UniqueID {
+	return *a.id
+}
+
 func (a *Answer) GetContent() string {
 	return a.content
 }
