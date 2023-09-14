@@ -6,5 +6,6 @@ type QuestionRepositoryInterface interface {
 	GetBySlug(slug string) (enterprise.Question, error)
 	GetByID(id string) (enterprise.Question, error)
 	Create(question *enterprise.Question) error
+	Save(question *enterprise.Question) error
 	DeleteByID(id string) error
 }

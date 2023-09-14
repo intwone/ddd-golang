@@ -91,3 +91,17 @@ func (mr *MockQuestionRepositoryInterfaceMockRecorder) GetBySlug(slug interface{
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBySlug", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).GetBySlug), slug)
 }
+
+// Save mocks base method.
+func (m *MockQuestionRepositoryInterface) Save(question *enterprise.Question) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Save", question)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Save indicates an expected call of Save.
+func (mr *MockQuestionRepositoryInterfaceMockRecorder) Save(question interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).Save), question)
+}
