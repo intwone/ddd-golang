@@ -75,6 +75,21 @@ func (mr *MockAnswerRepositoryInterfaceMockRecorder) GetByID(id interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockAnswerRepositoryInterface)(nil).GetByID), id)
 }
 
+// GetManyByQuestionID mocks base method.
+func (m *MockAnswerRepositoryInterface) GetManyByQuestionID(page int64, questionID string) ([]enterprise.Answer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetManyByQuestionID", page, questionID)
+	ret0, _ := ret[0].([]enterprise.Answer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetManyByQuestionID indicates an expected call of GetManyByQuestionID.
+func (mr *MockAnswerRepositoryInterfaceMockRecorder) GetManyByQuestionID(page, questionID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManyByQuestionID", reflect.TypeOf((*MockAnswerRepositoryInterface)(nil).GetManyByQuestionID), page, questionID)
+}
+
 // Save mocks base method.
 func (m *MockAnswerRepositoryInterface) Save(answer *enterprise.Answer) error {
 	m.ctrl.T.Helper()
