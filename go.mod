@@ -11,6 +11,7 @@ require (
 require github.com/gosimple/unidecode v1.0.1 // indirect
 
 require (
+	github.com/brianvoe/gofakeit/v6 v6.23.2
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/uuid v1.3.1
 	github.com/gosimple/slug v1.13.1

@@ -92,6 +92,21 @@ func (mr *MockQuestionRepositoryInterfaceMockRecorder) GetBySlug(slug interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBySlug", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).GetBySlug), slug)
 }
 
+// GetManyRecent mocks base method.
+func (m *MockQuestionRepositoryInterface) GetManyRecent(page int64) ([]enterprise.Question, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetManyRecent", page)
+	ret0, _ := ret[0].([]enterprise.Question)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetManyRecent indicates an expected call of GetManyRecent.
+func (mr *MockQuestionRepositoryInterfaceMockRecorder) GetManyRecent(page interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManyRecent", reflect.TypeOf((*MockQuestionRepositoryInterface)(nil).GetManyRecent), page)
+}
+
 // Save mocks base method.
 func (m *MockQuestionRepositoryInterface) Save(question *enterprise.Question) error {
 	m.ctrl.T.Helper()
