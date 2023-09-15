@@ -30,5 +30,5 @@ func (uc *DefaultGetQuestionBySlugUseCase) Execute(input GetQuestionBySlugUseCas
 		return enterprise.Question{}, err
 	}
 
-	return *question, nil
+	return question, nil
 }

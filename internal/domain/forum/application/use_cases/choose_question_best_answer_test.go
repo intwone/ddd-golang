@@ -17,11 +17,11 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 	t.Run("should choose the best answer", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content test", "1", "1", "1")
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answersRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
+		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 
 		question := enterprise.NewQuestion("Title Test", "Content test", "1", "1")
 		questionsRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
+		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		questionsRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		useCase := uc.NewDefaultChooseQuestionBestAnswerUseCase(questionsRepo, answersRepo)
@@ -39,11 +39,11 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 	t.Run("should not choose the best answer if the answer was from the author himself", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content test", "1", "1", "1")
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answersRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
+		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 
 		question := enterprise.NewQuestion("Title Test", "Content test", "2", "1")
 		questionsRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
+		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		questionsRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		useCase := uc.NewDefaultChooseQuestionBestAnswerUseCase(questionsRepo, answersRepo)

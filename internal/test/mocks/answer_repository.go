@@ -61,10 +61,10 @@ func (mr *MockAnswerRepositoryInterfaceMockRecorder) DeleteByID(id interface{}) 
 }
 
 // GetByID mocks base method.
-func (m *MockAnswerRepositoryInterface) GetByID(id string) (*enterprise.Answer, error) {
+func (m *MockAnswerRepositoryInterface) GetByID(id string) (enterprise.Answer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
-	ret0, _ := ret[0].(*enterprise.Answer)
+	ret0, _ := ret[0].(enterprise.Answer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

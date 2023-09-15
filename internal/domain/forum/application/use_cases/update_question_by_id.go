@@ -42,11 +42,11 @@ func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseC
 	question.SetTitle(input.Title)
 	question.SetContent(input.Content)
 
-	err = uc.QuestionRepository.Save(question)
+	err = uc.QuestionRepository.Save(&question)
 
 	if err != nil {
 		return enterprise.Question{}, err
 	}
 
-	return *question, nil
+	return question, nil
 }

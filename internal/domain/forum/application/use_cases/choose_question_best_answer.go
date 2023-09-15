@@ -50,11 +50,11 @@ func (uc *DefaultChooseQuestionBestAnswerUseCase) Execute(input ChooseQuestionBe
 
 	question.SetBestAnswerID(*answerID)
 
-	saveErr := uc.QuestionsRepository.Save(question)
+	saveErr := uc.QuestionsRepository.Save(&question)
 
 	if saveErr != nil {
 		return enterprise.Question{}, saveErr
 	}
 
-	return *question, nil
+	return question, nil
 }

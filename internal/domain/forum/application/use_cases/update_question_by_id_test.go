@@ -18,7 +18,7 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	t.Run("should update a question", func(t *testing.T) {
 		question := enterprise.NewQuestion("Title Test", "Content test", "1")
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(repo)
 
@@ -37,7 +37,7 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not update a question when not found question", func(t *testing.T) {
 		question := enterprise.Question{}
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(&question, errors.New("any")).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(question, errors.New("any")).AnyTimes()
 		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(repo)
 
@@ -56,7 +56,7 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not update a question when the author is not the same one who created the question", func(t *testing.T) {
 		question := enterprise.NewQuestion("Title Test", "Content test", "1")
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(repo)
 
 		input := uc.UpdateQuestionByIDUseCaseInput{

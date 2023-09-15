@@ -18,7 +18,7 @@ func TestDeleteAnswerByIDUseCase_Execute(t *testing.T) {
 	t.Run("should delete an answer", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content test", "1", "1")
 		repo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 		repo.EXPECT().DeleteByID(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteAnswerByIDUseCase(repo)
 
@@ -35,7 +35,7 @@ func TestDeleteAnswerByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not delete an answer when not found answer", func(t *testing.T) {
 		answer := enterprise.Answer{}
 		repo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(&answer, errors.New("any")).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(answer, errors.New("any")).AnyTimes()
 		repo.EXPECT().DeleteByID(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteAnswerByIDUseCase(repo)
 
@@ -52,7 +52,7 @@ func TestDeleteAnswerByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not delete a answer when the author is not the same one who created the answer", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content Test", "1", "1")
 		repo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteAnswerByIDUseCase(repo)
 
 		input := uc.DeleteAnswerByIDUseCaseInput{

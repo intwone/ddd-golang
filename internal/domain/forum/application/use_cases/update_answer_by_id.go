@@ -40,11 +40,11 @@ func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseI
 
 	answer.SetContent(input.Content)
 
-	err = uc.AnswerRepository.Save(answer)
+	err = uc.AnswerRepository.Save(&answer)
 
 	if err != nil {
 		return enterprise.Answer{}, nil
 	}
 
-	return *answer, nil
+	return answer, nil
 }
