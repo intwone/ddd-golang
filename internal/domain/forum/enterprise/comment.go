@@ -8,13 +8,15 @@ import (
 
 type Comment struct {
 	id        *vo.UniqueID
+	authorID  *vo.UniqueID
 	content   string
 	createdAt time.Time
 	updatedAt *time.Time
 }
 
-func NewComment(content string, id ...string) *Comment {
+func NewComment(content string, authorID string, id ...string) *Comment {
 	comment := Comment{
+		authorID:  vo.NewUniqueID(authorID),
 		content:   content,
 		createdAt: time.Now(),
 	}
@@ -30,6 +32,10 @@ func NewComment(content string, id ...string) *Comment {
 
 func (c *Comment) GetID() vo.UniqueID {
 	return *c.id
+}
+
+func (c *Comment) GetAuthorID() vo.UniqueID {
+	return *c.authorID
 }
 
 func (c *Comment) GetContent() string {

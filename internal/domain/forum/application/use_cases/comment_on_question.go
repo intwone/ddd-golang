@@ -34,7 +34,7 @@ func (uc *DefaultCommentOnQuestionUseCase) Execute(input CommentOnQuestionUseCas
 		return enterprise.QuestionComment{}, err
 	}
 
-	questionComment := enterprise.NewQuestionComment(input.Content, input.QuestionID)
+	questionComment := enterprise.NewQuestionComment(input.Content, input.AuthorID, input.QuestionID)
 
 	createErr := uc.QuestionCommentRepository.Create(questionComment)
 

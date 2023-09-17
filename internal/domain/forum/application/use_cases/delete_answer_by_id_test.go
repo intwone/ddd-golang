@@ -49,7 +49,7 @@ func TestDeleteAnswerByIDUseCase_Execute(t *testing.T) {
 		require.NotNil(t, result)
 	})
 
-	t.Run("should not delete a answer when the author is not the same one who created the answer", func(t *testing.T) {
+	t.Run("should not delete an answer when the author is not the same one who created the answer", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content Test", "1", "1")
 		repo := mock.NewMockAnswerRepositoryInterface(ctrl)
 		repo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()

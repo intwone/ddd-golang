@@ -9,9 +9,9 @@ type QuestionComment struct {
 	questionID *vo.UniqueID
 }
 
-func NewQuestionComment(content string, questionID string) *QuestionComment {
+func NewQuestionComment(content string, authorID string, questionID string) *QuestionComment {
 	questionComment := QuestionComment{
-		Comment:    *NewComment(content),
+		Comment:    *NewComment(content, authorID),
 		questionID: vo.NewUniqueID(questionID),
 	}
 
