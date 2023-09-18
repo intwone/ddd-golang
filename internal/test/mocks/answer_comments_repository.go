@@ -47,3 +47,32 @@ func (mr *MockAnswerCommentsRepositoryInterfaceMockRecorder) Create(answerCommen
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAnswerCommentsRepositoryInterface)(nil).Create), answerComment)
 }
+
+// DeleteByID mocks base method.
+func (m *MockAnswerCommentsRepositoryInterface) DeleteByID(id string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteByID", id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteByID indicates an expected call of DeleteByID.
+func (mr *MockAnswerCommentsRepositoryInterfaceMockRecorder) DeleteByID(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteByID", reflect.TypeOf((*MockAnswerCommentsRepositoryInterface)(nil).DeleteByID), id)
+}
+
+// GetByID mocks base method.
+func (m *MockAnswerCommentsRepositoryInterface) GetByID(id string) (enterprise.AnswerComment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByID", id)
+	ret0, _ := ret[0].(enterprise.AnswerComment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByID indicates an expected call of GetByID.
+func (mr *MockAnswerCommentsRepositoryInterfaceMockRecorder) GetByID(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockAnswerCommentsRepositoryInterface)(nil).GetByID), id)
+}
