@@ -28,7 +28,7 @@ func TestCreateQuestionUseCase_Execute(t *testing.T) {
 		result, err := useCase.Execute(input)
 
 		require.Nil(t, err)
-		require.NotNil(t, result.GetAuthorID().Value)
+		require.NotNil(t, result.GetAuthorID())
 		require.Equal(t, result.GetTitle(), input.Title)
 		require.Equal(t, result.GetContent(), input.Content)
 		require.Equal(t, result.GetSlug().Value, "title-example")

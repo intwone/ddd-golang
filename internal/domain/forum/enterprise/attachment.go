@@ -25,8 +25,8 @@ func NewAttachment(title string, link string, id ...string) *Attachment {
 	return &attachment
 }
 
-func (a *Attachment) GetID() vo.UniqueID {
-	return *a.id
+func (a *Attachment) GetID() string {
+	return a.id.ToString()
 }
 
 func (a *Attachment) GetTitle() string {

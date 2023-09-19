@@ -30,12 +30,12 @@ func NewComment(content string, authorID string, id ...string) *Comment {
 	return &comment
 }
 
-func (c *Comment) GetID() vo.UniqueID {
-	return *c.id
+func (c *Comment) GetID() string {
+	return c.id.ToString()
 }
 
-func (c *Comment) GetAuthorID() vo.UniqueID {
-	return *c.authorID
+func (c *Comment) GetAuthorID() string {
+	return c.authorID.ToString()
 }
 
 func (c *Comment) GetContent() string {

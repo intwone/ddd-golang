@@ -1,6 +1,8 @@
 package value_objects
 
-import uuid "github.com/satori/go.uuid"
+import (
+	uuid "github.com/satori/go.uuid"
+)
 
 type UniqueID struct {
 	Value *string

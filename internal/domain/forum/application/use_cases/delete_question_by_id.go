@@ -32,7 +32,7 @@ func (uc *DefaultDeleteQuestionByIDUseCase) Execute(input DeleteQuestionByIDUseC
 		return err
 	}
 
-	if input.AuthorID != *question.GetAuthorID().Value {
+	if input.AuthorID != question.GetAuthorID() {
 		return errors.New("not allowed")
 	}
 

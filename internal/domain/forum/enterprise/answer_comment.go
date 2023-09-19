@@ -18,6 +18,6 @@ func NewAnswerComment(content string, authorID string, answerID string) *AnswerC
 	return &answerComment
 }
 
-func (ac *AnswerComment) GetAnswerID() vo.UniqueID {
-	return *ac.answerID
+func (ac *AnswerComment) GetAnswerID() string {
+	return ac.answerID.ToString()
 }

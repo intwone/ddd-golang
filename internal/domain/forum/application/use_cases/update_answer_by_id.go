@@ -34,7 +34,7 @@ func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseI
 		return enterprise.Answer{}, err
 	}
 
-	if input.AuthorID != *answer.GetAuthorID().Value {
+	if input.AuthorID != answer.GetAuthorID() {
 		return enterprise.Answer{}, errors.New("not allowed")
 	}
 

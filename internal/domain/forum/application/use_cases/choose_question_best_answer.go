@@ -36,17 +36,17 @@ func (uc *DefaultChooseQuestionBestAnswerUseCase) Execute(input ChooseQuestionBe
 		return enterprise.Question{}, answerGetByIDErr
 	}
 
-	question, questionrGetByIDErr := uc.QuestionsRepository.GetByID(*answer.GetQuestionID().Value)
+	question, questionrGetByIDErr := uc.QuestionsRepository.GetByID(answer.GetQuestionID())
 
 	if questionrGetByIDErr != nil {
 		return enterprise.Question{}, questionrGetByIDErr
 	}
 
-	if input.AuthorID != *question.GetAuthorID().Value {
+	if input.AuthorID != question.GetAuthorID() {
 		return enterprise.Question{}, errors.New("not allowed")
 	}
 
-	answerID := vo.NewUniqueID(*question.GetAuthorID().Value)
+	answerID := vo.NewUniqueID(question.GetAuthorID())
 
 	question.SetBestAnswerID(*answerID)
 

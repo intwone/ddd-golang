@@ -24,11 +24,11 @@ type OptionalParams struct {
 	Attachments []QuestionAttachment
 }
 
-func NewQuestion(title string, content string, authorId string, params ...OptionalParams) *Question {
+func NewQuestion(title string, content string, authorID string, params ...OptionalParams) *Question {
 	question := Question{
 		title:     title,
 		content:   content,
-		authorID:  vo.NewUniqueID(authorId),
+		authorID:  vo.NewUniqueID(authorID),
 		createdAt: time.Now(),
 	}
 
@@ -48,8 +48,8 @@ func NewQuestion(title string, content string, authorId string, params ...Option
 	return &question
 }
 
-func (q *Question) GetID() vo.UniqueID {
-	return *q.id
+func (q *Question) GetID() string {
+	return q.id.ToString()
 }
 
 func (q *Question) GetSlug() vo.Slug {
@@ -68,12 +68,12 @@ func (q *Question) GetAttachments() []QuestionAttachment {
 	return *q.attachments
 }
 
-func (q *Question) GetBestAnswerID() vo.UniqueID {
-	return *q.bestAnswerID
+func (q *Question) GetBestAnswerID() string {
+	return q.bestAnswerID.ToString()
 }
 
-func (q *Question) GetAuthorID() vo.UniqueID {
-	return *q.authorID
+func (q *Question) GetAuthorID() string {
+	return q.authorID.ToString()
 }
 
 func (q *Question) GetExcerpt() string {

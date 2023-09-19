@@ -18,6 +18,6 @@ func NewQuestionComment(content string, authorID string, questionID string) *Que
 	return &questionComment
 }
 
-func (qc *QuestionComment) GetQuestionID() vo.UniqueID {
-	return *qc.questionID
+func (qc *QuestionComment) GetQuestionID() string {
+	return qc.questionID.ToString()
 }

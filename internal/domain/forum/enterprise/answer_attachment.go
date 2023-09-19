@@ -18,10 +18,10 @@ func NewAnswerAttachment(attachmentID string, answerID string) *AnswerAttachment
 	return &answerAttachment
 }
 
-func (ac *AnswerAttachment) GetAnswerID() vo.UniqueID {
-	return *ac.answerID
+func (ac *AnswerAttachment) GetAnswerID() string {
+	return ac.answerID.ToString()
 }
 
-func (ac *AnswerAttachment) GetAttachmentID() vo.UniqueID {
-	return *ac.attachmentID
+func (ac *AnswerAttachment) GetAttachmentID() string {
+	return ac.attachmentID.ToString()
 }

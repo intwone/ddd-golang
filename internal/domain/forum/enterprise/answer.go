@@ -33,20 +33,20 @@ func NewAnswer(content string, authorID string, questionID string, id ...string)
 	return &answer
 }
 
-func (a *Answer) GetID() vo.UniqueID {
-	return *a.id
+func (a *Answer) GetID() string {
+	return a.id.ToString()
 }
 
 func (a *Answer) GetContent() string {
 	return a.content
 }
 
-func (a *Answer) GetAuthorID() vo.UniqueID {
-	return *a.authorID
+func (a *Answer) GetAuthorID() string {
+	return a.authorID.ToString()
 }
 
-func (a *Answer) GetQuestionID() vo.UniqueID {
-	return *a.questionID
+func (a *Answer) GetQuestionID() string {
+	return a.questionID.ToString()
 }
 
 func (a *Answer) GetExcerpt() string {

@@ -35,7 +35,7 @@ func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseC
 		return enterprise.Question{}, err
 	}
 
-	if input.AuthorID != *question.GetAuthorID().Value {
+	if input.AuthorID != question.GetAuthorID() {
 		return enterprise.Question{}, errors.New("not allowed")
 	}
 
