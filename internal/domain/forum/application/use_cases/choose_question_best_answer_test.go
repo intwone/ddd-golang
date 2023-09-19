@@ -19,7 +19,7 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
 		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 
-		question := enterprise.NewQuestion("Title Test", "Content test", "1", "1")
+		question := enterprise.NewQuestion("Title Test", "Content test", "1")
 		questionsRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
 		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		questionsRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
@@ -41,7 +41,7 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
 		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 
-		question := enterprise.NewQuestion("Title Test", "Content test", "2", "1")
+		question := enterprise.NewQuestion("Title Test", "Content test", "2")
 		questionsRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
 		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		questionsRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()

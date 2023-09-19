@@ -12,13 +12,19 @@ type Question struct {
 	slug         *vo.Slug
 	title        string
 	content      string
+	attachments  *[]QuestionAttachment
 	bestAnswerID *vo.UniqueID
 	authorID     *vo.UniqueID
 	createdAt    time.Time
 	updatedAt    *time.Time
 }
 
-func NewQuestion(title string, content string, authorId string, id ...string) *Question {
+type OptionalParams struct {
+	ID          string
+	Attachments []QuestionAttachment
+}
+
+func NewQuestion(title string, content string, authorId string, params ...OptionalParams) *Question {
 	question := Question{
 		title:     title,
 		content:   content,
@@ -29,10 +35,14 @@ func NewQuestion(title string, content string, authorId string, id ...string) *Q
 	slug := vo.NewSlug(title)
 	question.slug = &vo.Slug{Value: slug.CreateFromText()}
 
-	if len(id) > 0 {
-		question.id = vo.NewUniqueID(id[0])
-	} else {
-		question.id = vo.NewUniqueID()
+	for _, param := range params {
+		question.id = vo.NewUniqueID(param.ID)
+
+		if len(param.Attachments) > 0 {
+			question.attachments = &param.Attachments
+		} else {
+			question.attachments = &[]QuestionAttachment{}
+		}
 	}
 
 	return &question
@@ -52,6 +62,10 @@ func (q *Question) GetTitle() string {
 
 func (q *Question) GetContent() string {
 	return q.content
+}
+
+func (q *Question) GetAttachments() []QuestionAttachment {
+	return *q.attachments
 }
 
 func (q *Question) GetBestAnswerID() vo.UniqueID {
