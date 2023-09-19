@@ -85,14 +85,18 @@ func (q *Question) GetExcerpt() string {
 	return q.content
 }
 
+func (q *Question) SetTitle(title string) {
+	q.title = title
+	q.update()
+}
+
 func (q *Question) SetContent(content string) {
 	q.content = content
 	q.update()
 }
 
-func (q *Question) SetTitle(title string) {
-	q.title = title
-	q.update()
+func (q *Question) SetAttachments(attachments []QuestionAttachment) {
+	q.attachments = &attachments
 }
 
 func (q *Question) SetBestAnswerID(bestAnswerID vo.UniqueID) {

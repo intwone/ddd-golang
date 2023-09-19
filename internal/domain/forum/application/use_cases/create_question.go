@@ -6,9 +6,10 @@ import (
 )
 
 type CreateQuestionUseCaseInput struct {
-	AuthorID string
-	Title    string
-	Content  string
+	AuthorID       string
+	Title          string
+	Content        string
+	attachmentsIDs []string
 }
 
 type CreateQuestionUseCaseInterface interface {
@@ -27,6 +28,15 @@ func NewDefaultCreateQuestionUseCase(questionRepository repositories.QuestionRep
 
 func (uc *DefaultCreateQuestionUseCase) Execute(input CreateQuestionUseCaseInput) (enterprise.Question, error) {
 	newQuestion := enterprise.NewQuestion(input.Title, input.Content, input.AuthorID)
+
+	var attachments []enterprise.QuestionAttachment
+
+	for _, attachmentID := range input.attachmentsIDs {
+		attachment := enterprise.NewQuestionAttachment(attachmentID, newQuestion.GetID())
+		attachments = append(attachments, *attachment)
+	}
+
+	newQuestion.SetAttachments(attachments)
 
 	err := uc.QuestionRepository.Create(newQuestion)
 

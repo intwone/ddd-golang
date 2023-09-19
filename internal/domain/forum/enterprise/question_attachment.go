@@ -18,10 +18,10 @@ func NewQuestionAttachment(attachmentID string, questionID string) *QuestionAtta
 	return &questionAttachment
 }
 
-func (ac *QuestionAttachment) GetQuestionID() vo.UniqueID {
-	return *ac.questionID
+func (ac *QuestionAttachment) GetQuestionID() string {
+	return ac.questionID.ToString()
 }
 
-func (ac *QuestionAttachment) GetAttachmentID() vo.UniqueID {
-	return *ac.attachmentID
+func (ac *QuestionAttachment) GetAttachmentID() string {
+	return ac.attachmentID.ToString()
 }
