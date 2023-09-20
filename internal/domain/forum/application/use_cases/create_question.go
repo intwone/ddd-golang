@@ -7,9 +7,9 @@ import (
 
 type CreateQuestionUseCaseInput struct {
 	AuthorID       string
+	AttachmentsIDs []string
 	Title          string
 	Content        string
-	attachmentsIDs []string
 }
 
 type CreateQuestionUseCaseInterface interface {
@@ -29,14 +29,19 @@ func NewDefaultCreateQuestionUseCase(questionRepository repositories.QuestionRep
 func (uc *DefaultCreateQuestionUseCase) Execute(input CreateQuestionUseCaseInput) (enterprise.Question, error) {
 	newQuestion := enterprise.NewQuestion(input.Title, input.Content, input.AuthorID)
 
-	var attachments []enterprise.QuestionAttachment
+	attachments := make([]*enterprise.QuestionAttachment, len(input.AttachmentsIDs))
 
-	for _, attachmentID := range input.attachmentsIDs {
-		attachment := enterprise.NewQuestionAttachment(attachmentID, newQuestion.GetID())
-		attachments = append(attachments, *attachment)
+	for i, attachmentID := range input.AttachmentsIDs {
+		attachments[i] = enterprise.NewQuestionAttachment(attachmentID, newQuestion.GetID())
 	}
 
-	newQuestion.SetAttachments(attachments)
+	attachmentsList := enterprise.NewQuestionAttachmentsList([]interface{}{})
+
+	for _, attachment := range attachments {
+		attachmentsList.Add(attachment)
+	}
+
+	newQuestion.SetAttachments(*attachmentsList)
 
 	err := uc.QuestionRepository.Create(newQuestion)
 

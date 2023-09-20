@@ -34,6 +34,25 @@ func TestCreateQuestionUseCase_Execute(t *testing.T) {
 		require.Equal(t, result.GetSlug().Value, "title-example")
 	})
 
+	t.Run("should create a question with attachments", func(t *testing.T) {
+		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
+		repo.EXPECT().Create(gomock.Any()).AnyTimes()
+		useCase := uc.NewDefaultCreateQuestionUseCase(repo)
+
+		input := uc.CreateQuestionUseCaseInput{
+			AuthorID:       "1",
+			Title:          "Title Example",
+			Content:        "Content",
+			AttachmentsIDs: []string{"1", "2", "3"},
+		}
+
+		result, err := useCase.Execute(input)
+
+		require.Nil(t, err)
+		require.Equal(t, result.GetSlug().Value, "title-example")
+		require.Equal(t, 3, len(result.GetAttachments().GetCurrentItems()))
+	})
+
 	t.Run("should not create a question when repo throw error", func(t *testing.T) {
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
 		repo.EXPECT().Create(gomock.Any()).Return(errors.New("any")).AnyTimes()
@@ -48,6 +67,5 @@ func TestCreateQuestionUseCase_Execute(t *testing.T) {
 		_, err := useCase.Execute(input)
 
 		require.NotNil(t, err)
-
 	})
 }

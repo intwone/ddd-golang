@@ -8,10 +8,11 @@ import (
 )
 
 type UpdateQuestionByIDUseCaseInput struct {
-	ID       string
-	AuthorID string
-	Title    string
-	Content  string
+	ID             string
+	AuthorID       string
+	Title          string
+	Content        string
+	AttachmentsIDs []string
 }
 
 type UpdateQuestionByIDUseCaseInterface interface {

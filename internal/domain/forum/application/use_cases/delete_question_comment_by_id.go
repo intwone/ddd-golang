@@ -7,8 +7,8 @@ import (
 )
 
 type DeleteQuestionCommentByIDUseCaseInput struct {
-	ID       string
 	AuthorID string
+	ID       string
 }
 
 type DeleteQuestionCommentByIDUseCaseInterface interface {

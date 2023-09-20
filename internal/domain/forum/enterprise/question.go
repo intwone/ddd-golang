@@ -12,7 +12,7 @@ type Question struct {
 	slug         *vo.Slug
 	title        string
 	content      string
-	attachments  *[]QuestionAttachment
+	attachments  *QuestionAttachmentsList
 	bestAnswerID *vo.UniqueID
 	authorID     *vo.UniqueID
 	createdAt    time.Time
@@ -21,7 +21,7 @@ type Question struct {
 
 type OptionalParams struct {
 	ID          string
-	Attachments []QuestionAttachment
+	Attachments QuestionAttachmentsList
 }
 
 func NewQuestion(title string, content string, authorID string, params ...OptionalParams) *Question {
@@ -36,13 +36,19 @@ func NewQuestion(title string, content string, authorID string, params ...Option
 	question.slug = &vo.Slug{Value: slug.CreateFromText()}
 
 	for _, param := range params {
-		question.id = vo.NewUniqueID(param.ID)
+		if param.ID != "" {
+			question.id = vo.NewUniqueID(param.ID)
+		}
 
-		if len(param.Attachments) > 0 {
+		if len(param.Attachments.GetCurrentItems()) > 0 {
 			question.attachments = &param.Attachments
 		} else {
-			question.attachments = &[]QuestionAttachment{}
+			question.attachments = NewQuestionAttachmentsList([]interface{}{})
 		}
+	}
+
+	if question.id == nil {
+		question.id = vo.NewUniqueID()
 	}
 
 	return &question
@@ -64,7 +70,7 @@ func (q *Question) GetContent() string {
 	return q.content
 }
 
-func (q *Question) GetAttachments() []QuestionAttachment {
+func (q *Question) GetAttachments() QuestionAttachmentsList {
 	return *q.attachments
 }
 
@@ -95,7 +101,7 @@ func (q *Question) SetContent(content string) {
 	q.update()
 }
 
-func (q *Question) SetAttachments(attachments []QuestionAttachment) {
+func (q *Question) SetAttachments(attachments QuestionAttachmentsList) {
 	q.attachments = &attachments
 }
 

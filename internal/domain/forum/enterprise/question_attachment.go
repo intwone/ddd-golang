@@ -11,8 +11,8 @@ type QuestionAttachment struct {
 
 func NewQuestionAttachment(attachmentID string, questionID string) *QuestionAttachment {
 	questionAttachment := QuestionAttachment{
-		attachmentID: vo.NewUniqueID(attachmentID),
 		questionID:   vo.NewUniqueID(questionID),
+		attachmentID: vo.NewUniqueID(attachmentID),
 	}
 
 	return &questionAttachment

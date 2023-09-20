@@ -6,8 +6,8 @@ import (
 )
 
 type GetQuestionAnswersUseCaseInput struct {
-	Page       int64
 	QuestionID string
+	Page       int64
 }
 
 type GetQuestionAnswersUseCaseInterface interface {

@@ -6,8 +6,8 @@ import (
 )
 
 type GetQuestionCommentsByIDUseCaseInput struct {
-	Page int64
 	ID   string
+	Page int64
 }
 
 type GetQuestionCommentsByIDUseCaseInterface interface {
