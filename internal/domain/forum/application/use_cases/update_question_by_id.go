@@ -10,9 +10,9 @@ import (
 type UpdateQuestionByIDUseCaseInput struct {
 	ID             string
 	AuthorID       string
+	AttachmentsIDs []string
 	Title          string
 	Content        string
-	AttachmentsIDs []string
 }
 
 type UpdateQuestionByIDUseCaseInterface interface {
@@ -20,12 +20,14 @@ type UpdateQuestionByIDUseCaseInterface interface {
 }
 
 type DefaultUpdateQuestionByIDUseCase struct {
-	QuestionRepository repositories.QuestionRepositoryInterface
+	QuestionRepository            repositories.QuestionRepositoryInterface
+	QuestionAttachmentsRepository repositories.QuestionAttachmentsRepositoryInterface
 }
 
-func NewDefaultUpdateQuestionByIDUseCase(questionRepository repositories.QuestionRepositoryInterface) *DefaultUpdateQuestionByIDUseCase {
+func NewDefaultUpdateQuestionByIDUseCase(questionRepository repositories.QuestionRepositoryInterface, questionAttachmentsRepository repositories.QuestionAttachmentsRepositoryInterface) *DefaultUpdateQuestionByIDUseCase {
 	return &DefaultUpdateQuestionByIDUseCase{
-		QuestionRepository: questionRepository,
+		QuestionRepository:            questionRepository,
+		QuestionAttachmentsRepository: questionAttachmentsRepository,
 	}
 }
 
@@ -40,8 +42,29 @@ func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseC
 		return enterprise.Question{}, errors.New("not allowed")
 	}
 
+	currentAttachments, questionAttachmentErr := uc.QuestionAttachmentsRepository.GetManyByQuestionID(question.GetID())
+
+	if questionAttachmentErr != nil {
+		return enterprise.Question{}, err
+	}
+
+	attachmentsList := enterprise.NewQuestionAttachmentsList([]interface{}{})
+
+	for _, attachment := range currentAttachments {
+		attachmentsList.Add(attachment)
+	}
+
+	newAttachments := make([]interface{}, len(input.AttachmentsIDs))
+
+	for i, attachmentID := range input.AttachmentsIDs {
+		newAttachments[i] = enterprise.NewQuestionAttachment(attachmentID, question.GetID())
+	}
+
+	attachmentsList.Update(newAttachments)
+
 	question.SetTitle(input.Title)
 	question.SetContent(input.Content)
+	question.SetAttachments(*attachmentsList)
 
 	err = uc.QuestionRepository.Save(&question)
 

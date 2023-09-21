@@ -7,6 +7,7 @@ import (
 	"github.com/golang/mock/gomock"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
+	"github.com/intwone/ddd-golang/internal/test/factories"
 	mock "github.com/intwone/ddd-golang/internal/test/mocks"
 	"github.com/stretchr/testify/require"
 )
@@ -16,11 +17,17 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	defer ctrl.Finish()
 
 	t.Run("should update a question", func(t *testing.T) {
-		question := enterprise.NewQuestion("Title Test", "Content test", "1")
-		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
-		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
-		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(repo)
+		attachments := enterprise.NewQuestionAttachmentsList([]interface{}{"1", "2"})
+		question := enterprise.NewQuestion("Title Test", "Content test", "1", enterprise.OptionalParams{ID: "1", Attachments: *attachments})
+		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
+		questionRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
+
+		questionAttachments := factories.QuestionAttachmentsFactory(5, "1")
+		questionAttachmentsRepo := mock.NewMockQuestionAttachmentsRepositoryInterface(ctrl)
+		questionAttachmentsRepo.EXPECT().GetManyByQuestionID(gomock.Any()).Return(questionAttachments, nil).AnyTimes()
+
+		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(questionRepo, questionAttachmentsRepo)
 
 		input := uc.UpdateQuestionByIDUseCaseInput{
 			ID:       "1",
@@ -36,10 +43,15 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 
 	t.Run("should not update a question when not found question", func(t *testing.T) {
 		question := enterprise.Question{}
-		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(question, errors.New("any")).AnyTimes()
-		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
-		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(repo)
+		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
+		questionRepo.EXPECT().GetByID(gomock.Any()).Return(question, errors.New("any")).AnyTimes()
+		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
+
+		questionAttachments := factories.QuestionAttachmentsFactory(5, "1")
+		questionAttachmentsRepo := mock.NewMockQuestionAttachmentsRepositoryInterface(ctrl)
+		questionAttachmentsRepo.EXPECT().GetManyByQuestionID(gomock.Any()).Return(questionAttachments, nil).AnyTimes()
+
+		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(questionRepo, questionAttachmentsRepo)
 
 		input := uc.UpdateQuestionByIDUseCaseInput{
 			ID:       "1",
@@ -55,9 +67,15 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 
 	t.Run("should not update a question when the author is not the same one who created the question", func(t *testing.T) {
 		question := enterprise.NewQuestion("Title Test", "Content test", "1")
-		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
-		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(repo)
+		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
+		questionRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
+
+		questionAttachments := factories.QuestionAttachmentsFactory(5, "1")
+		questionAttachmentsRepo := mock.NewMockQuestionAttachmentsRepositoryInterface(ctrl)
+		questionAttachmentsRepo.EXPECT().GetManyByQuestionID(gomock.Any()).Return(questionAttachments, nil).AnyTimes()
+
+		useCase := uc.NewDefaultUpdateQuestionByIDUseCase(questionRepo, questionAttachmentsRepo)
 
 		input := uc.UpdateQuestionByIDUseCaseInput{
 			ID:       "1",
@@ -71,5 +89,4 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 		require.NotNil(t, err)
 		require.Equal(t, "not allowed", err.Error())
 	})
-
 }
