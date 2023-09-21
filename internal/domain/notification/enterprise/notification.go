@@ -16,8 +16,7 @@ type Notification struct {
 }
 
 type NotificationOptionalParams struct {
-	ID     string
-	ReadAt *time.Time
+	ID string
 }
 
 func NewNotification(title string, content string, recipientID string, params ...NotificationOptionalParams) *Notification {
@@ -57,6 +56,11 @@ func (n *Notification) GetContent() string {
 	return n.content
 }
 
-func (n *Notification) SetReadAt() time.Time {
-	return *n.readAt
+func (n *Notification) GetReadAt() *time.Time {
+	return n.readAt
+}
+
+func (n *Notification) Read() {
+	now := time.Now()
+	n.readAt = &now
 }
