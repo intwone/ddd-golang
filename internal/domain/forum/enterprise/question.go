@@ -19,12 +19,12 @@ type Question struct {
 	updatedAt    *time.Time
 }
 
-type OptionalParams struct {
+type QuestionOptionalParams struct {
 	ID          string
 	Attachments QuestionAttachmentsList
 }
 
-func NewQuestion(title string, content string, authorID string, params ...OptionalParams) *Question {
+func NewQuestion(title string, content string, authorID string, params ...QuestionOptionalParams) *Question {
 	question := Question{
 		title:     title,
 		content:   content,
@@ -103,6 +103,7 @@ func (q *Question) SetContent(content string) {
 
 func (q *Question) SetAttachments(attachments QuestionAttachmentsList) {
 	q.attachments = &attachments
+	q.update()
 }
 
 func (q *Question) SetBestAnswerID(bestAnswerID vo.UniqueID) {

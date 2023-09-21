@@ -17,13 +17,13 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	defer ctrl.Finish()
 
 	t.Run("should update a question", func(t *testing.T) {
-		attachments := enterprise.NewQuestionAttachmentsList([]interface{}{"1", "2"})
-		question := enterprise.NewQuestion("Title Test", "Content test", "1", enterprise.OptionalParams{ID: "1", Attachments: *attachments})
+		attachments := enterprise.NewQuestionAttachmentsList([]interface{}{"1", "2", "3"})
+		question := enterprise.NewQuestion("Title Test", "Content test", "1", enterprise.QuestionOptionalParams{ID: "1", Attachments: *attachments})
 		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
 		questionRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
 		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
-		questionAttachments := factories.QuestionAttachmentsFactory(5, "1")
+		questionAttachments := factories.QuestionAttachmentsFactory(3, "1")
 		questionAttachmentsRepo := mock.NewMockQuestionAttachmentsRepositoryInterface(ctrl)
 		questionAttachmentsRepo.EXPECT().GetManyByQuestionID(gomock.Any()).Return(questionAttachments, nil).AnyTimes()
 

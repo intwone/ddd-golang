@@ -8,15 +8,21 @@ import (
 )
 
 type Answer struct {
-	id         *vo.UniqueID
-	content    string
-	authorID   *vo.UniqueID
-	questionID *vo.UniqueID
-	createdAt  time.Time
-	updatedAt  *time.Time
+	id          *vo.UniqueID
+	content     string
+	attachments *AnswerAttachmentsList
+	authorID    *vo.UniqueID
+	questionID  *vo.UniqueID
+	createdAt   time.Time
+	updatedAt   *time.Time
 }
 
-func NewAnswer(content string, authorID string, questionID string, id ...string) *Answer {
+type AnswerOptionalParams struct {
+	ID          string
+	Attachments AnswerAttachmentsList
+}
+
+func NewAnswer(content string, authorID string, questionID string, params ...AnswerOptionalParams) *Answer {
 	answer := Answer{
 		content:    content,
 		authorID:   vo.NewUniqueID(authorID),
@@ -24,9 +30,19 @@ func NewAnswer(content string, authorID string, questionID string, id ...string)
 		createdAt:  time.Now(),
 	}
 
-	if len(id) > 0 {
-		answer.id = vo.NewUniqueID(id[0])
-	} else {
+	for _, param := range params {
+		if param.ID != "" {
+			answer.id = vo.NewUniqueID(param.ID)
+		}
+
+		if len(param.Attachments.GetCurrentItems()) > 0 {
+			answer.attachments = &param.Attachments
+		} else {
+			answer.attachments = NewAnswerAttachmentsList([]interface{}{})
+		}
+	}
+
+	if answer.id == nil {
 		answer.id = vo.NewUniqueID()
 	}
 
@@ -39,6 +55,10 @@ func (a *Answer) GetID() string {
 
 func (a *Answer) GetContent() string {
 	return a.content
+}
+
+func (a *Answer) GetAttachments() AnswerAttachmentsList {
+	return *a.attachments
 }
 
 func (a *Answer) GetAuthorID() string {
@@ -61,6 +81,11 @@ func (a *Answer) GetExcerpt() string {
 
 func (a *Answer) SetContent(content string) {
 	a.content = content
+	a.update()
+}
+
+func (a *Answer) SetAttachments(attachments AnswerAttachmentsList) {
+	a.attachments = &attachments
 	a.update()
 }
 

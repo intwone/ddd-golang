@@ -15,7 +15,8 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 	defer ctrl.Finish()
 
 	t.Run("should choose the best answer", func(t *testing.T) {
-		answer := enterprise.NewAnswer("Content test", "1", "1", "1")
+		attachments := enterprise.NewAnswerAttachmentsList([]interface{}{"1", "2"})
+		answer := enterprise.NewAnswer("Content test", "1", "1", enterprise.AnswerOptionalParams{ID: "1", Attachments: *attachments})
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
 		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 
@@ -37,7 +38,8 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 	})
 
 	t.Run("should not choose the best answer if the answer was from the author himself", func(t *testing.T) {
-		answer := enterprise.NewAnswer("Content test", "1", "1", "1")
+		attachments := enterprise.NewAnswerAttachmentsList([]interface{}{"1", "2"})
+		answer := enterprise.NewAnswer("Content test", "1", "1", enterprise.AnswerOptionalParams{ID: "1", Attachments: *attachments})
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
 		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
 

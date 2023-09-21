@@ -25,3 +25,7 @@ func (ac *AnswerAttachment) GetAnswerID() string {
 func (ac *AnswerAttachment) GetAttachmentID() string {
 	return ac.attachmentID.ToString()
 }
+
+func (ac *AnswerAttachment) SetAttachmentID(attachmentID vo.UniqueID) {
+	ac.attachmentID = &attachmentID
+}
