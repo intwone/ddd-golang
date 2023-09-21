@@ -8,9 +8,10 @@ import (
 )
 
 type UpdateAnswerByIDUseCaseInput struct {
-	ID       string
-	AuthorID string
-	Content  string
+	ID             string
+	AuthorID       string
+	AttachmentsIDs []string
+	Content        string
 }
 
 type UpdateAnswerByIDUseCaseInterface interface {
@@ -18,12 +19,14 @@ type UpdateAnswerByIDUseCaseInterface interface {
 }
 
 type DefaultUpdateAnswerByIDUseCase struct {
-	AnswerRepository repositories.AnswerRepositoryInterface
+	AnswerRepository            repositories.AnswerRepositoryInterface
+	AnswerAttachmentsRepository repositories.AnswerAttachmentsRepositoryInterface
 }
 
-func NewDefaultUpdateAnswerByIDUseCase(answerRepository repositories.AnswerRepositoryInterface) *DefaultUpdateAnswerByIDUseCase {
+func NewDefaultUpdateAnswerByIDUseCase(answerRepository repositories.AnswerRepositoryInterface, answerAttachmentsRepository repositories.AnswerAttachmentsRepositoryInterface) *DefaultUpdateAnswerByIDUseCase {
 	return &DefaultUpdateAnswerByIDUseCase{
-		AnswerRepository: answerRepository,
+		AnswerRepository:            answerRepository,
+		AnswerAttachmentsRepository: answerAttachmentsRepository,
 	}
 }
 
@@ -37,6 +40,26 @@ func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseI
 	if input.AuthorID != answer.GetAuthorID() {
 		return enterprise.Answer{}, errors.New("not allowed")
 	}
+
+	currentAttachments, answerAttachmentErr := uc.AnswerAttachmentsRepository.GetManyByAnswerID(answer.GetID())
+
+	if answerAttachmentErr != nil {
+		return enterprise.Answer{}, err
+	}
+
+	attachmentsList := enterprise.NewAnswerAttachmentsList([]interface{}{})
+
+	for _, attachment := range currentAttachments {
+		attachmentsList.Add(attachment)
+	}
+
+	newAttachments := make([]interface{}, len(input.AttachmentsIDs))
+
+	for i, attachmentID := range input.AttachmentsIDs {
+		newAttachments[i] = enterprise.NewAnswerAttachment(attachmentID, answer.GetID())
+	}
+
+	attachmentsList.Update(newAttachments)
 
 	answer.SetContent(input.Content)
 
