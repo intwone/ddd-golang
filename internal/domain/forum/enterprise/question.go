@@ -9,12 +9,12 @@ import (
 
 type Question struct {
 	id           *vo.UniqueID
+	authorID     *vo.UniqueID
+	bestAnswerID *vo.UniqueID
 	slug         *vo.Slug
 	title        string
 	content      string
 	attachments  *QuestionAttachmentsList
-	bestAnswerID *vo.UniqueID
-	authorID     *vo.UniqueID
 	createdAt    time.Time
 	updatedAt    *time.Time
 }
@@ -26,9 +26,9 @@ type QuestionOptionalParams struct {
 
 func NewQuestion(title string, content string, authorID string, params ...QuestionOptionalParams) *Question {
 	question := Question{
+		authorID:  vo.NewUniqueID(authorID),
 		title:     title,
 		content:   content,
-		authorID:  vo.NewUniqueID(authorID),
 		createdAt: time.Now(),
 	}
 
