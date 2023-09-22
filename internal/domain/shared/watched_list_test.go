@@ -3,7 +3,7 @@ package shared_test
 import (
 	"testing"
 
-	"github.com/intwone/ddd-golang/internal/shared"
+	"github.com/intwone/ddd-golang/internal/domain/shared"
 	"github.com/stretchr/testify/require"
 )
 

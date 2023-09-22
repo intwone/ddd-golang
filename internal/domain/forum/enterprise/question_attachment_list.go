@@ -1,6 +1,6 @@
 package enterprise
 
-import "github.com/intwone/ddd-golang/internal/shared"
+import "github.com/intwone/ddd-golang/internal/domain/shared"
 
 type QuestionAttachmentsList struct {
 	*shared.WatchedList
