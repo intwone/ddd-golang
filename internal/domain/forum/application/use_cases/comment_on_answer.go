@@ -27,11 +27,11 @@ func NewDefaultCommentOnAnswerUseCase(answerRepository repositories.AnswerReposi
 	}
 }
 
-func (uc *DefaultCommentOnAnswerUseCase) Execute(input CommentOnAnswerUseCaseInput) (enterprise.AnswerComment, error) {
+func (uc *DefaultCommentOnAnswerUseCase) Execute(input CommentOnAnswerUseCaseInput) (*enterprise.AnswerComment, error) {
 	_, err := uc.AnswerRepository.GetByID(input.AnswerID)
 
 	if err != nil {
-		return enterprise.AnswerComment{}, err
+		return nil, err
 	}
 
 	answerComment := enterprise.NewAnswerComment(input.Content, input.AuthorID, input.AnswerID)
@@ -39,8 +39,8 @@ func (uc *DefaultCommentOnAnswerUseCase) Execute(input CommentOnAnswerUseCaseInp
 	createErr := uc.AnswerCommentRepository.Create(answerComment)
 
 	if createErr != nil {
-		return enterprise.AnswerComment{}, createErr
+		return nil, createErr
 	}
 
-	return *answerComment, nil
+	return answerComment, nil
 }

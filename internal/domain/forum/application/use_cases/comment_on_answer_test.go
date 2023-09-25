@@ -21,7 +21,7 @@ func TestCommentOnAnswerUseCase_Execute(t *testing.T) {
 
 		answer := enterprise.NewAnswer("Content Test", "1", "1")
 		answerRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answerRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
+		answerRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
 
 		useCase := uc.NewDefaultCommentOnAnswerUseCase(answerRepo, answerCommentRepo)
 
@@ -40,9 +40,8 @@ func TestCommentOnAnswerUseCase_Execute(t *testing.T) {
 		answerCommentRepo := mock.NewMockAnswerCommentsRepositoryInterface(ctrl)
 		answerCommentRepo.EXPECT().Create(gomock.Any()).AnyTimes()
 
-		answer := enterprise.Answer{}
 		answerRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answerRepo.EXPECT().GetByID(gomock.Any()).Return(answer, errors.New("any")).AnyTimes()
+		answerRepo.EXPECT().GetByID(gomock.Any()).Return(nil, errors.New("any")).AnyTimes()
 
 		useCase := uc.NewDefaultCommentOnAnswerUseCase(answerRepo, answerCommentRepo)
 

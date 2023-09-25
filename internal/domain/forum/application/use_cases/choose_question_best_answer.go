@@ -29,31 +29,31 @@ func NewDefaultChooseQuestionBestAnswerUseCase(questionRepository repositories.Q
 	}
 }
 
-func (uc *DefaultChooseQuestionBestAnswerUseCase) Execute(input ChooseQuestionBestAnswerUseCaseInput) (enterprise.Question, error) {
+func (uc *DefaultChooseQuestionBestAnswerUseCase) Execute(input ChooseQuestionBestAnswerUseCaseInput) (*enterprise.Question, error) {
 	answer, answerGetByIDErr := uc.AnswersRepository.GetByID(input.AnswerID)
 
 	if answerGetByIDErr != nil {
-		return enterprise.Question{}, answerGetByIDErr
+		return nil, answerGetByIDErr
 	}
 
 	question, questionrGetByIDErr := uc.QuestionsRepository.GetByID(answer.GetQuestionID())
 
 	if questionrGetByIDErr != nil {
-		return enterprise.Question{}, questionrGetByIDErr
+		return nil, questionrGetByIDErr
 	}
 
 	if input.AuthorID != question.GetAuthorID() {
-		return enterprise.Question{}, errors.New("not allowed")
+		return nil, errors.New("not allowed")
 	}
 
 	answerID := vo.NewUniqueID(question.GetAuthorID())
 
 	question.SetBestAnswerID(*answerID)
 
-	saveErr := uc.QuestionsRepository.Save(&question)
+	saveErr := uc.QuestionsRepository.Save(question)
 
 	if saveErr != nil {
-		return enterprise.Question{}, saveErr
+		return nil, saveErr
 	}
 
 	return question, nil

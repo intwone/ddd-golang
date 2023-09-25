@@ -23,11 +23,11 @@ func NewDefaulGetRecentQuestionsUseCase(questionRepository repositories.Question
 	}
 }
 
-func (uc *DefaultGetRecentQuestionsUseCase) Execute(input GetRecentQuestionsUseCaseInput) ([]enterprise.Question, error) {
+func (uc *DefaultGetRecentQuestionsUseCase) Execute(input GetRecentQuestionsUseCaseInput) (*[]enterprise.Question, error) {
 	questions, err := uc.QuestionRepository.GetManyRecent(input.Page)
 
 	if err != nil {
-		return []enterprise.Question{}, err
+		return nil, err
 	}
 
 	return questions, nil

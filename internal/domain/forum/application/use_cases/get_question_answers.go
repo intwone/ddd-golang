@@ -24,11 +24,11 @@ func NewDefaulGetQuestionAnswersUseCase(answerRepository repositories.AnswerRepo
 	}
 }
 
-func (uc *DefaultGetQuestionAnswersUseCase) Execute(input GetQuestionAnswersUseCaseInput) ([]enterprise.Answer, error) {
+func (uc *DefaultGetQuestionAnswersUseCase) Execute(input GetQuestionAnswersUseCaseInput) (*[]enterprise.Answer, error) {
 	answers, err := uc.AnswerRepository.GetManyByQuestionID(input.Page, input.QuestionID)
 
 	if err != nil {
-		return []enterprise.Answer{}, err
+		return nil, err
 	}
 
 	return answers, nil

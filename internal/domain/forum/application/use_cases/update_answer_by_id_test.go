@@ -19,7 +19,7 @@ func TestUpdateAnswerByIDUseCase_Execute(t *testing.T) {
 	t.Run("should update an answer", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content test", "1", "1")
 		answerRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answerRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
+		answerRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
 		answerRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		answerAttachments := factories.AnswerAttachmentsFactory(3, "1")
@@ -40,9 +40,8 @@ func TestUpdateAnswerByIDUseCase_Execute(t *testing.T) {
 	})
 
 	t.Run("should not update an answer when not found answer", func(t *testing.T) {
-		answer := enterprise.Answer{}
 		answerRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answerRepo.EXPECT().GetByID(gomock.Any()).Return(answer, errors.New("any")).AnyTimes()
+		answerRepo.EXPECT().GetByID(gomock.Any()).Return(nil, errors.New("any")).AnyTimes()
 		answerRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		answerAttachments := factories.AnswerAttachmentsFactory(3, "1")
@@ -65,7 +64,7 @@ func TestUpdateAnswerByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not update an answer when the author is not the same one who created the answer", func(t *testing.T) {
 		answer := enterprise.NewAnswer("Content test", "1", "1")
 		answerRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answerRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
+		answerRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
 		answerRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		answerAttachments := factories.AnswerAttachmentsFactory(3, "1")

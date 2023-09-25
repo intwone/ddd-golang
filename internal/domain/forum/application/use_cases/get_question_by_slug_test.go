@@ -18,7 +18,7 @@ func TestGetQuestionBySlugUseCase_Execute(t *testing.T) {
 	t.Run("should get a question by slug", func(t *testing.T) {
 		question := enterprise.NewQuestion("Title Test", "Content test", "1")
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetBySlug("title-test").Return(*question, nil).AnyTimes()
+		repo.EXPECT().GetBySlug("title-test").Return(question, nil).AnyTimes()
 		useCase := uc.NewDefaulGetQuestionBySlugUseCase(repo)
 
 		input := uc.GetQuestionBySlugUseCaseInput{
@@ -28,22 +28,20 @@ func TestGetQuestionBySlugUseCase_Execute(t *testing.T) {
 		result, err := useCase.Execute(input)
 
 		require.Nil(t, err)
-		require.Equal(t, *question, result)
+		require.Equal(t, question, result)
 	})
 
 	t.Run("should not get a question by slug when slug not found", func(t *testing.T) {
-		question := enterprise.Question{}
 		repo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		repo.EXPECT().GetBySlug("title-test").Return(question, errors.New("any")).AnyTimes()
+		repo.EXPECT().GetBySlug("title-test").Return(nil, errors.New("any")).AnyTimes()
 		useCase := uc.NewDefaulGetQuestionBySlugUseCase(repo)
 
 		input := uc.GetQuestionBySlugUseCaseInput{
 			Slug: "title-test",
 		}
 
-		result, err := useCase.Execute(input)
+		_, err := useCase.Execute(input)
 
 		require.NotNil(t, err)
-		require.Equal(t, question, result)
 	})
 }

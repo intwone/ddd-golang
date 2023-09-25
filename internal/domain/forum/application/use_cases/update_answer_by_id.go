@@ -30,26 +30,26 @@ func NewDefaultUpdateAnswerByIDUseCase(answerRepository repositories.AnswerRepos
 	}
 }
 
-func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseInput) (enterprise.Answer, error) {
+func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseInput) (*enterprise.Answer, error) {
 	answer, err := uc.AnswerRepository.GetByID(input.ID)
 
 	if err != nil {
-		return enterprise.Answer{}, err
+		return nil, err
 	}
 
 	if input.AuthorID != answer.GetAuthorID() {
-		return enterprise.Answer{}, errors.New("not allowed")
+		return nil, errors.New("not allowed")
 	}
 
 	currentAttachments, answerAttachmentErr := uc.AnswerAttachmentsRepository.GetManyByAnswerID(answer.GetID())
 
 	if answerAttachmentErr != nil {
-		return enterprise.Answer{}, err
+		return nil, err
 	}
 
 	attachmentsList := enterprise.NewAnswerAttachmentsList([]interface{}{})
 
-	for _, attachment := range currentAttachments {
+	for _, attachment := range *currentAttachments {
 		attachmentsList.Add(attachment)
 	}
 
@@ -63,10 +63,10 @@ func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseI
 
 	answer.SetContent(input.Content)
 
-	err = uc.AnswerRepository.Save(&answer)
+	err = uc.AnswerRepository.Save(answer)
 
 	if err != nil {
-		return enterprise.Answer{}, nil
+		return nil, nil
 	}
 
 	return answer, nil

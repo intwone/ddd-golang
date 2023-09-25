@@ -63,10 +63,10 @@ func (mr *MockAnswerCommentsRepositoryInterfaceMockRecorder) DeleteByID(id inter
 }
 
 // GetByID mocks base method.
-func (m *MockAnswerCommentsRepositoryInterface) GetByID(id string) (enterprise.AnswerComment, error) {
+func (m *MockAnswerCommentsRepositoryInterface) GetByID(id string) (*enterprise.AnswerComment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
-	ret0, _ := ret[0].(enterprise.AnswerComment)
+	ret0, _ := ret[0].(*enterprise.AnswerComment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -78,10 +78,10 @@ func (mr *MockAnswerCommentsRepositoryInterfaceMockRecorder) GetByID(id interfac
 }
 
 // GetManyByID mocks base method.
-func (m *MockAnswerCommentsRepositoryInterface) GetManyByID(page int64, id string) ([]enterprise.AnswerComment, error) {
+func (m *MockAnswerCommentsRepositoryInterface) GetManyByID(page int64, id string) (*[]enterprise.AnswerComment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetManyByID", page, id)
-	ret0, _ := ret[0].([]enterprise.AnswerComment)
+	ret0, _ := ret[0].(*[]enterprise.AnswerComment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

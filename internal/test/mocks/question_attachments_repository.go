@@ -35,10 +35,10 @@ func (m *MockQuestionAttachmentsRepositoryInterface) EXPECT() *MockQuestionAttac
 }
 
 // GetManyByQuestionID mocks base method.
-func (m *MockQuestionAttachmentsRepositoryInterface) GetManyByQuestionID(questionID string) ([]enterprise.QuestionAttachment, error) {
+func (m *MockQuestionAttachmentsRepositoryInterface) GetManyByQuestionID(questionID string) (*[]enterprise.QuestionAttachment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetManyByQuestionID", questionID)
-	ret0, _ := ret[0].([]enterprise.QuestionAttachment)
+	ret0, _ := ret[0].(*[]enterprise.QuestionAttachment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

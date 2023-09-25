@@ -20,7 +20,7 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 		attachments := enterprise.NewQuestionAttachmentsList([]interface{}{"1", "2", "3"})
 		question := enterprise.NewQuestion("Title Test", "Content test", "1", enterprise.QuestionOptionalParams{ID: "1", Attachments: *attachments})
 		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		questionRepo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
 		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		questionAttachments := factories.QuestionAttachmentsFactory(3, "1")
@@ -42,9 +42,8 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	})
 
 	t.Run("should not update a question when not found question", func(t *testing.T) {
-		question := enterprise.Question{}
 		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionRepo.EXPECT().GetByID(gomock.Any()).Return(question, errors.New("any")).AnyTimes()
+		questionRepo.EXPECT().GetByID(gomock.Any()).Return(nil, errors.New("any")).AnyTimes()
 		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		questionAttachments := factories.QuestionAttachmentsFactory(5, "1")
@@ -68,7 +67,7 @@ func TestUpdateQuestionByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not update a question when the author is not the same one who created the question", func(t *testing.T) {
 		question := enterprise.NewQuestion("Title Test", "Content test", "1")
 		questionRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		questionRepo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
 		questionRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		questionAttachments := factories.QuestionAttachmentsFactory(5, "1")

@@ -5,7 +5,7 @@ import (
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 )
 
-func AnswerFactory(count int) []enterprise.Answer {
+func AnswerFactory(count int) *[]enterprise.Answer {
 	fake := gofakeit.New(0)
 	answers := make([]enterprise.Answer, count)
 
@@ -13,5 +13,5 @@ func AnswerFactory(count int) []enterprise.Answer {
 		answers[i].SetContent(fake.Paragraph(2, 4, 3, " "))
 	}
 
-	return answers
+	return &answers
 }

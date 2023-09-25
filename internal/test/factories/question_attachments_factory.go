@@ -6,7 +6,7 @@ import (
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 )
 
-func QuestionAttachmentsFactory(count int, questionID string) []enterprise.QuestionAttachment {
+func QuestionAttachmentsFactory(count int, questionID string) *[]enterprise.QuestionAttachment {
 	questionAttachments := make([]enterprise.QuestionAttachment, count)
 
 	for i := 0; i < count; i++ {
@@ -15,5 +15,5 @@ func QuestionAttachmentsFactory(count int, questionID string) []enterprise.Quest
 		questionAttachments[i] = *attachment
 	}
 
-	return questionAttachments
+	return &questionAttachments
 }

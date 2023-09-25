@@ -10,7 +10,7 @@ type GetQuestionBySlugUseCaseInput struct {
 }
 
 type GetQuestionBySlugUseCaseInterface interface {
-	Execute(input GetQuestionBySlugUseCaseInput) (enterprise.Question, error)
+	Execute(input GetQuestionBySlugUseCaseInput) (*enterprise.Question, error)
 }
 
 type DefaultGetQuestionBySlugUseCase struct {
@@ -23,11 +23,11 @@ func NewDefaulGetQuestionBySlugUseCase(questionRepository repositories.QuestionR
 	}
 }
 
-func (uc *DefaultGetQuestionBySlugUseCase) Execute(input GetQuestionBySlugUseCaseInput) (enterprise.Question, error) {
+func (uc *DefaultGetQuestionBySlugUseCase) Execute(input GetQuestionBySlugUseCaseInput) (*enterprise.Question, error) {
 	question, err := uc.QuestionRepository.GetBySlug(input.Slug)
 
 	if err != nil {
-		return enterprise.Question{}, err
+		return nil, err
 	}
 
 	return question, nil

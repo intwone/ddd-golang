@@ -35,10 +35,10 @@ func (m *MockAnswerAttachmentsRepositoryInterface) EXPECT() *MockAnswerAttachmen
 }
 
 // GetManyByAnswerID mocks base method.
-func (m *MockAnswerAttachmentsRepositoryInterface) GetManyByAnswerID(answerID string) ([]enterprise.AnswerAttachment, error) {
+func (m *MockAnswerAttachmentsRepositoryInterface) GetManyByAnswerID(answerID string) (*[]enterprise.AnswerAttachment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetManyByAnswerID", answerID)
-	ret0, _ := ret[0].([]enterprise.AnswerAttachment)
+	ret0, _ := ret[0].(*[]enterprise.AnswerAttachment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

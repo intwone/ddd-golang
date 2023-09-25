@@ -18,11 +18,11 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 		attachments := enterprise.NewAnswerAttachmentsList([]interface{}{"1", "2"})
 		answer := enterprise.NewAnswer("Content test", "1", "1", enterprise.AnswerOptionalParams{ID: "1", Attachments: *attachments})
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
+		answersRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
 
 		question := enterprise.NewQuestion("Title Test", "Content test", "1")
 		questionsRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
 		questionsRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		useCase := uc.NewDefaultChooseQuestionBestAnswerUseCase(questionsRepo, answersRepo)
@@ -41,11 +41,11 @@ func TestChooseQuestionBestAnswerUseCase_Execute(t *testing.T) {
 		attachments := enterprise.NewAnswerAttachmentsList([]interface{}{"1", "2"})
 		answer := enterprise.NewAnswer("Content test", "1", "1", enterprise.AnswerOptionalParams{ID: "1", Attachments: *attachments})
 		answersRepo := mock.NewMockAnswerRepositoryInterface(ctrl)
-		answersRepo.EXPECT().GetByID(gomock.Any()).Return(*answer, nil).AnyTimes()
+		answersRepo.EXPECT().GetByID(gomock.Any()).Return(answer, nil).AnyTimes()
 
 		question := enterprise.NewQuestion("Title Test", "Content test", "2")
 		questionsRepo := mock.NewMockQuestionRepositoryInterface(ctrl)
-		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(*question, nil).AnyTimes()
+		questionsRepo.EXPECT().GetByID(gomock.Any()).Return(question, nil).AnyTimes()
 		questionsRepo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 
 		useCase := uc.NewDefaultChooseQuestionBestAnswerUseCase(questionsRepo, answersRepo)

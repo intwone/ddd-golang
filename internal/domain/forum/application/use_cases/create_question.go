@@ -26,7 +26,7 @@ func NewDefaultCreateQuestionUseCase(questionRepository repositories.QuestionRep
 	}
 }
 
-func (uc *DefaultCreateQuestionUseCase) Execute(input CreateQuestionUseCaseInput) (enterprise.Question, error) {
+func (uc *DefaultCreateQuestionUseCase) Execute(input CreateQuestionUseCaseInput) (*enterprise.Question, error) {
 	newQuestion := enterprise.NewQuestion(input.Title, input.Content, input.AuthorID)
 
 	attachments := make([]*enterprise.QuestionAttachment, len(input.AttachmentsIDs))
@@ -46,8 +46,8 @@ func (uc *DefaultCreateQuestionUseCase) Execute(input CreateQuestionUseCaseInput
 	err := uc.QuestionRepository.Create(newQuestion)
 
 	if err != nil {
-		return enterprise.Question{}, err
+		return nil, err
 	}
 
-	return *newQuestion, nil
+	return newQuestion, nil
 }

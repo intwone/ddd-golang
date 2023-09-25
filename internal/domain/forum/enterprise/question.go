@@ -20,8 +20,9 @@ type Question struct {
 }
 
 type QuestionOptionalParams struct {
-	ID          string
-	Attachments QuestionAttachmentsList
+	ID           string
+	BestAnswerID string
+	Attachments  QuestionAttachmentsList
 }
 
 func NewQuestion(title string, content string, authorID string, params ...QuestionOptionalParams) *Question {
@@ -40,6 +41,10 @@ func NewQuestion(title string, content string, authorID string, params ...Questi
 			question.id = vo.NewUniqueID(param.ID)
 		}
 
+		if param.BestAnswerID != "" {
+			question.bestAnswerID = vo.NewUniqueID(param.BestAnswerID)
+		}
+
 		if len(param.Attachments.GetCurrentItems()) > 0 {
 			question.attachments = &param.Attachments
 		} else {
@@ -56,6 +61,10 @@ func NewQuestion(title string, content string, authorID string, params ...Questi
 
 func (q *Question) GetID() string {
 	return q.id.ToString()
+}
+
+func (q *Question) GetAuthorID() string {
+	return q.authorID.ToString()
 }
 
 func (q *Question) GetSlug() vo.Slug {
@@ -78,8 +87,12 @@ func (q *Question) GetBestAnswerID() string {
 	return q.bestAnswerID.ToString()
 }
 
-func (q *Question) GetAuthorID() string {
-	return q.authorID.ToString()
+func (q *Question) GetCreatedAt() *time.Time {
+	return &q.createdAt
+}
+
+func (q *Question) GetUpdatedAt() *time.Time {
+	return q.updatedAt
 }
 
 func (q *Question) GetExcerpt() string {

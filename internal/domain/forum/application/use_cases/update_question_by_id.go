@@ -31,26 +31,26 @@ func NewDefaultUpdateQuestionByIDUseCase(questionRepository repositories.Questio
 	}
 }
 
-func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseCaseInput) (enterprise.Question, error) {
+func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseCaseInput) (*enterprise.Question, error) {
 	question, err := uc.QuestionRepository.GetByID(input.ID)
 
 	if err != nil {
-		return enterprise.Question{}, err
+		return nil, err
 	}
 
 	if input.AuthorID != question.GetAuthorID() {
-		return enterprise.Question{}, errors.New("not allowed")
+		return nil, errors.New("not allowed")
 	}
 
 	currentAttachments, questionAttachmentErr := uc.QuestionAttachmentsRepository.GetManyByQuestionID(question.GetID())
 
 	if questionAttachmentErr != nil {
-		return enterprise.Question{}, err
+		return nil, err
 	}
 
 	attachmentsList := enterprise.NewQuestionAttachmentsList([]interface{}{})
 
-	for _, attachment := range currentAttachments {
+	for _, attachment := range *currentAttachments {
 		attachmentsList.Add(attachment)
 	}
 
@@ -66,10 +66,10 @@ func (uc *DefaultUpdateQuestionByIDUseCase) Execute(input UpdateQuestionByIDUseC
 	question.SetContent(input.Content)
 	question.SetAttachments(*attachmentsList)
 
-	err = uc.QuestionRepository.Save(&question)
+	err = uc.QuestionRepository.Save(question)
 
 	if err != nil {
-		return enterprise.Question{}, err
+		return nil, err
 	}
 
 	return question, nil

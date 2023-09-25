@@ -22,7 +22,7 @@ func NewUniqueID(value ...string) *UniqueID {
 }
 
 func (u *UniqueID) ToString() string {
-	if u.Value != nil {
+	if u != nil {
 		return *u.Value
 	}
 

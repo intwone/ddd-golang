@@ -24,11 +24,11 @@ func NewDefaulGetAnswerCommentsByIDUseCase(answerCommentsRepository repositories
 	}
 }
 
-func (uc *DefaultGetAnswerCommentsByIDUseCase) Execute(input GetAnswerCommentsByIDUseCaseInput) ([]enterprise.AnswerComment, error) {
+func (uc *DefaultGetAnswerCommentsByIDUseCase) Execute(input GetAnswerCommentsByIDUseCaseInput) (*[]enterprise.AnswerComment, error) {
 	answerComments, err := uc.AnswerCommentsRepository.GetManyByID(input.Page, input.ID)
 
 	if err != nil {
-		return []enterprise.AnswerComment{}, err
+		return nil, err
 	}
 
 	return answerComments, nil

@@ -18,7 +18,7 @@ func TestDeleteQuestionCommentByIDUseCase_Execute(t *testing.T) {
 	t.Run("should delete a question comment", func(t *testing.T) {
 		questionComment := enterprise.NewQuestionComment("Content test", "1", "1")
 		repo := mock.NewMockQuestionCommentsRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*questionComment, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(questionComment, nil).AnyTimes()
 		repo.EXPECT().DeleteByID(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteQuestionCommentByIDUseCase(repo)
 
@@ -33,9 +33,8 @@ func TestDeleteQuestionCommentByIDUseCase_Execute(t *testing.T) {
 	})
 
 	t.Run("should not delete a question comment when not found questionComment", func(t *testing.T) {
-		questionComment := enterprise.QuestionComment{}
 		repo := mock.NewMockQuestionCommentsRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(questionComment, errors.New("any")).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(nil, errors.New("any")).AnyTimes()
 		repo.EXPECT().DeleteByID(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteQuestionCommentByIDUseCase(repo)
 
@@ -52,7 +51,7 @@ func TestDeleteQuestionCommentByIDUseCase_Execute(t *testing.T) {
 	t.Run("should not delete a questionComment when the author is not the same one who created the questionComment", func(t *testing.T) {
 		questionComment := enterprise.NewQuestionComment("Content test", "1", "1")
 		repo := mock.NewMockQuestionCommentsRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*questionComment, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(questionComment, nil).AnyTimes()
 		useCase := uc.NewDefaultDeleteQuestionCommentByIDUseCase(repo)
 
 		input := uc.DeleteQuestionCommentByIDUseCaseInput{
