@@ -25,7 +25,7 @@ func NewDefaultCreateQuestionController(createQuestionUseCase uc.CreateQuestionU
 }
 
 func (cqc *DefaultCreateQuestionControllerInterface) CreateQuestionController(c *gin.Context) {
-	var questionRequestDTO dtos.QuestionRequestDTO
+	var questionRequestDTO dtos.CreateQuestionRequestDTO
 
 	jsonBindErr := c.ShouldBindJSON(questionRequestDTO)
 
