@@ -10,21 +10,17 @@ import (
 	"github.com/intwone/ddd-golang/internal/presentation/errors"
 )
 
-type CreateQuestionControllerInterface interface {
-	Handle(c *gin.Context)
-}
-
-type DefaultCreateQuestionControllerInterface struct {
+type DefaultCreateQuestionInterface struct {
 	CreateQuestionUseCase uc.CreateQuestionUseCaseInterface
 }
 
-func NewDefaultCreateQuestionController(createQuestionUseCase uc.CreateQuestionUseCaseInterface) *DefaultCreateQuestionControllerInterface {
-	return &DefaultCreateQuestionControllerInterface{
+func NewDefaultCreateQuestion(createQuestionUseCase uc.CreateQuestionUseCaseInterface) *DefaultCreateQuestionInterface {
+	return &DefaultCreateQuestionInterface{
 		CreateQuestionUseCase: createQuestionUseCase,
 	}
 }
 
-func (cqc *DefaultCreateQuestionControllerInterface) CreateQuestionController(c *gin.Context) {
+func (cqc *DefaultCreateQuestionInterface) Handle(c *gin.Context) {
 	var questionRequestDTO dtos.CreateQuestionRequestDTO
 
 	jsonBindErr := c.ShouldBindJSON(questionRequestDTO)

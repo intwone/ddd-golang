@@ -31,12 +31,15 @@ func main() {
 	router := gin.Default()
 
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
+
 	getQuestionBySlugUseCase := uc.NewDefaulGetQuestionBySlugUseCase(questionSQLCRepository)
 	getQuestionController := ctrl.NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase)
 
-	questionGroup := router.Group("/api/questions")
+	// createQuestionUseCase := uc.NewDefaultCreateQuestionUseCase(questionSQLCRepository)
+	// createQuestionController := ctrl.NewDefaultCreateQuestion(createQuestionUseCase)
 
-	routes.QuestionRoutes(questionGroup, getQuestionController)
+	routes.QuestionRoutes(router, *getQuestionController)
+	// routes.QuestionRoutes(router, *getQuestionController)
 
 	if err := router.Run(":3000"); err != nil {
 		log.Fatal(err)

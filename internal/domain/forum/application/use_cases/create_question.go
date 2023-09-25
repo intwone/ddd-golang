@@ -13,7 +13,7 @@ type CreateQuestionUseCaseInput struct {
 }
 
 type CreateQuestionUseCaseInterface interface {
-	Execute(input CreateQuestionUseCaseInput) (enterprise.Question, error)
+	Execute(input CreateQuestionUseCaseInput) (*enterprise.Question, error)
 }
 
 type DefaultCreateQuestionUseCase struct {
