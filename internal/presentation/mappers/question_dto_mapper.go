@@ -5,7 +5,7 @@ import (
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
 )
 
-func CreateQuestionDTOMapper(question *enterprise.Question) dtos.QuestionDTO {
+func QuestionDTOMapper(question *enterprise.Question) dtos.QuestionDTO {
 	return dtos.QuestionDTO{
 		ID:           question.GetID(),
 		AuthorID:     question.GetAuthorID(),

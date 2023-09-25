@@ -32,7 +32,7 @@ func (cqc *DefaultGetQuestionBySlugInterface) Handle(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	questionMapped := mappers.CreateQuestionDTOMapper(question)
+	questionMapped := mappers.QuestionDTOMapper(question)
 
 	c.JSON(http.StatusOK, questionMapped)
 }
