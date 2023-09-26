@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"net/http"
@@ -10,31 +10,37 @@ import (
 	"github.com/intwone/ddd-golang/internal/presentation/errors"
 )
 
-type DefaultCreateQuestionInterface struct {
+type DefaultCreateQuestionControllerInterface struct {
 	CreateQuestionUseCase uc.CreateQuestionUseCaseInterface
 }
 
-func NewDefaultCreateQuestion(createQuestionUseCase uc.CreateQuestionUseCaseInterface) *DefaultCreateQuestionInterface {
-	return &DefaultCreateQuestionInterface{
+func NewDefaultCreateQuestionController(createQuestionUseCase uc.CreateQuestionUseCaseInterface) *DefaultCreateQuestionControllerInterface {
+	return &DefaultCreateQuestionControllerInterface{
 		CreateQuestionUseCase: createQuestionUseCase,
 	}
 }
 
-func (cqc *DefaultCreateQuestionInterface) Handle(c *gin.Context) {
+func (cqc *DefaultCreateQuestionControllerInterface) Handle(c *gin.Context) {
 	var questionRequestDTO dtos.CreateQuestionRequestDTO
 
-	jsonBindErr := c.ShouldBindJSON(questionRequestDTO)
+	jsonBindErr := c.ShouldBindJSON(&questionRequestDTO)
 
 	if jsonBindErr != nil {
 		restError := errors.ValidateError(jsonBindErr)
 
 		c.JSON(restError.Code, restError)
+		return
 	}
 
-	_, useCaseErr := cqc.CreateQuestionUseCase.Execute(uc.CreateQuestionUseCaseInput{Title: questionRequestDTO.Title, Content: questionRequestDTO.Content})
+	_, useCaseErr := cqc.CreateQuestionUseCase.Execute(uc.CreateQuestionUseCaseInput{
+		AuthorID: questionRequestDTO.AuthorID,
+		Title:    questionRequestDTO.Title,
+		Content:  questionRequestDTO.Content,
+	})
 
 	if useCaseErr != nil {
 		c.JSON(http.StatusInternalServerError, useCaseErr)
+		return
 	}
 
 	c.JSON(http.StatusNoContent, nil)

@@ -47,7 +47,7 @@ func ValidateError(validationError error) *RestError {
 			errorsCauses = append(errorsCauses, cause)
 		}
 
-		return NewBadRequestValidationError("some field are invalids", errorsCauses)
+		return NewBadRequestValidationError("some fields are invalids", errorsCauses)
 	}
 
 	return NewBadRequestError("error trying to convert fields")

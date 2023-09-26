@@ -33,13 +33,17 @@ func main() {
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
 
 	getQuestionBySlugUseCase := uc.NewDefaulGetQuestionBySlugUseCase(questionSQLCRepository)
-	getQuestionController := ctrl.NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase)
+	getQuestionBySlugController := ctrl.NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase)
 
-	// createQuestionUseCase := uc.NewDefaultCreateQuestionUseCase(questionSQLCRepository)
-	// createQuestionController := ctrl.NewDefaultCreateQuestion(createQuestionUseCase)
+	createQuestionUseCase := uc.NewDefaultCreateQuestionUseCase(questionSQLCRepository)
+	createQuestionController := ctrl.NewDefaultCreateQuestionController(createQuestionUseCase)
 
-	routes.QuestionRoutes(router, *getQuestionController)
-	// routes.QuestionRoutes(router, *getQuestionController)
+	controllers := ctrl.Controllers{
+		GetQuestionBySlugController: getQuestionBySlugController,
+		CreateQuestionController:    createQuestionController,
+	}
+
+	routes.SetupQuestionRoutes(router, controllers)
 
 	if err := router.Run(":3000"); err != nil {
 		log.Fatal(err)

@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"net/http"
@@ -21,7 +21,7 @@ func NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase uc.GetQuestionBySlugUs
 	}
 }
 
-func (cqc *DefaultGetQuestionBySlugInterface) HandleGetQuestionBySlug(c *gin.Context) {
+func (cqc *DefaultGetQuestionBySlugInterface) Handle(c *gin.Context) {
 	slug := c.Param("slug")
 
 	question, err := cqc.GetQuestionBySlugUseCase.Execute(uc.GetQuestionBySlugUseCaseInput{Slug: slug})

@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 	s "github.com/intwone/ddd-golang/internal/infra/database/sqlc"
@@ -46,6 +47,43 @@ func (r *QuestionSQLCRepository) GetManyRecent(page int64) (*[]enterprise.Questi
 }
 
 func (r *QuestionSQLCRepository) Create(question *enterprise.Question) error {
+	authorID, err := uuid.Parse(question.GetAuthorID())
+
+	if err != nil {
+		return err
+	}
+
+	questionID, err := uuid.Parse(question.GetID())
+
+	if err != nil {
+		return err
+	}
+
+	var bestAnswerID uuid.NullUUID
+	if question.GetBestAnswerID() != "" {
+		bestAnswerUUID, err := uuid.Parse(question.GetBestAnswerID())
+
+		if err != nil {
+			return err
+		}
+
+		bestAnswerID = uuid.NullUUID{UUID: bestAnswerUUID, Valid: true}
+	}
+
+	createQuestionErr := r.db.CreateQuestion(context.Background(), s.CreateQuestionParams{
+		Title:        question.GetTitle(),
+		Slug:         question.GetSlug().Value,
+		Content:      question.GetContent(),
+		QuestionID:   questionID,
+		AuthorID:     authorID,
+		BestAnswerID: bestAnswerID,
+		UpdatedAt:    *question.GetUpdatedAt(),
+	})
+
+	if createQuestionErr != nil {
+		return createQuestionErr
+	}
+
 	return nil
 }
 

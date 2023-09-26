@@ -5,7 +5,8 @@ import (
 	ctrl "github.com/intwone/ddd-golang/internal/presentation/controllers"
 )
 
-func QuestionRoutes(r *gin.Engine, controller ctrl.DefaultGetQuestionBySlugInterface) {
+func SetupQuestionRoutes(r *gin.Engine, controllers ctrl.Controllers) {
 	questionGroup := r.Group("/api/questions")
-	questionGroup.GET("/:slug", controller.HandleGetQuestionBySlug)
+	questionGroup.GET("/:slug", controllers.GetQuestionBySlugController.Handle)
+	questionGroup.POST("/", controllers.CreateQuestionController.Handle)
 }
