@@ -2,25 +2,27 @@ package enterprise
 
 import vo "github.com/intwone/ddd-golang/internal/domain/forum/enterprise/value_objects"
 
-type Student struct {
+type user struct {
 	id   *vo.UniqueID
 	name string
+	role string
 }
 
-func NewStudent(name string, id ...string) *Student {
-	student := Student{
+func Newuser(name string, role string, id ...string) *user {
+	user := user{
 		name: name,
+		role: role,
 	}
 
 	if len(id) > 0 {
-		student.id = vo.NewUniqueID(id[0])
+		user.id = vo.NewUniqueID(id[0])
 	} else {
-		student.id = vo.NewUniqueID()
+		user.id = vo.NewUniqueID()
 	}
 
-	return &student
+	return &user
 }
 
-func (s *Student) GetName() string {
+func (s *user) GetName() string {
 	return s.name
 }

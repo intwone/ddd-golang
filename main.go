@@ -45,7 +45,7 @@ func main() {
 
 	routes.SetupQuestionRoutes(router, controllers)
 
-	if err := router.Run(":3000"); err != nil {
+	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }

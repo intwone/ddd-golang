@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
@@ -28,12 +29,22 @@ func (r *QuestionSQLCRepository) GetBySlug(slug string) (*enterprise.Question, e
 
 	attachments := enterprise.NewQuestionAttachmentsList([]interface{}{})
 
+	var bestAnswerID string
+
+	if result.BestAnswerID.Valid {
+		bestAnswerID = result.BestAnswerID.UUID.String()
+	} else {
+		bestAnswerID = ""
+	}
+
+	fmt.Println(bestAnswerID)
+
 	return enterprise.NewQuestion(
 		result.Title,
 		result.Content,
 		result.AuthorID.String(),
 		enterprise.QuestionOptionalParams{
-			BestAnswerID: result.BestAnswerID.UUID.String(),
+			BestAnswerID: bestAnswerID,
 			Attachments:  *attachments,
 		}), nil
 }
