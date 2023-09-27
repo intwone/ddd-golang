@@ -1,4 +1,4 @@
-package errors
+package validations
 
 import (
 	"encoding/json"
@@ -9,6 +9,7 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	en_translation "github.com/go-playground/validator/v10/translations/en"
+	er "github.com/intwone/ddd-golang/internal/presentation/errors"
 )
 
 var (
@@ -27,19 +28,19 @@ func init() {
 	}
 }
 
-func ValidateError(validationError error) *RestError {
+func ErrorValidation(validationError error) *er.RestError {
 	var jsonError *json.UnmarshalTypeError
 	var jsonValidationError validator.ValidationErrors
 
 	if errors.As(validationError, &jsonError) {
-		return NewBadRequestError("invalid field type")
+		return er.NewBadRequestError("invalid field type")
 	}
 
 	if errors.As(validationError, &jsonValidationError) {
-		errorsCauses := []Cause{}
+		errorsCauses := []er.Cause{}
 
 		for _, e := range validationError.(validator.ValidationErrors) {
-			cause := Cause{
+			cause := er.Cause{
 				Message: e.Translate(transl),
 				Field:   e.Field(),
 			}
@@ -47,8 +48,8 @@ func ValidateError(validationError error) *RestError {
 			errorsCauses = append(errorsCauses, cause)
 		}
 
-		return NewBadRequestValidationError("some fields are invalids", errorsCauses)
+		return er.NewBadRequestValidationError("some fields are invalids", errorsCauses)
 	}
 
-	return NewBadRequestError("error trying to convert fields")
+	return er.NewBadRequestError("error trying to convert fields")
 }

@@ -15,7 +15,7 @@ type DefaultGetQuestionBySlugControllerInterface struct {
 	GetQuestionBySlugUseCase uc.GetQuestionBySlugUseCaseInterface
 }
 
-func NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase uc.GetQuestionBySlugUseCaseInterface) *DefaultGetQuestionBySlugControllerInterface {
+func NewDefaultGetQuestionBySlugController(getQuestionBySlugUseCase uc.GetQuestionBySlugUseCaseInterface) *DefaultGetQuestionBySlugControllerInterface {
 	return &DefaultGetQuestionBySlugControllerInterface{
 		GetQuestionBySlugUseCase: getQuestionBySlugUseCase,
 	}

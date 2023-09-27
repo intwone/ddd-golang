@@ -8,6 +8,7 @@ import (
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
 	"github.com/intwone/ddd-golang/internal/presentation/errors"
+	"github.com/intwone/ddd-golang/internal/presentation/validations"
 )
 
 type DefaultCreateUserControllerInterface struct {
@@ -26,13 +27,13 @@ func (cuc *DefaultCreateUserControllerInterface) Handle(c *gin.Context) {
 	jsonBindErr := c.ShouldBindJSON(&createUserRequestDTO)
 
 	if jsonBindErr != nil {
-		restError := errors.ValidateError(jsonBindErr)
+		restError := validations.ErrorValidation(jsonBindErr)
 
 		c.JSON(restError.Code, restError)
 		return
 	}
 
-	if !createUserRequestDTO.Role.Validate() {
+	if !createUserRequestDTO.Role.RoleValidation() {
 		restErr := errors.NewBadRequestError("role should be student or instructor")
 		c.JSON(restErr.Code, restErr)
 		return

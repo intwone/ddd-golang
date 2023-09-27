@@ -7,7 +7,7 @@ import (
 
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
-	"github.com/intwone/ddd-golang/internal/presentation/errors"
+	"github.com/intwone/ddd-golang/internal/presentation/validations"
 )
 
 type DefaultCreateQuestionControllerInterface struct {
@@ -26,7 +26,7 @@ func (cqc *DefaultCreateQuestionControllerInterface) Handle(c *gin.Context) {
 	jsonBindErr := c.ShouldBindJSON(&createQuestionRequestDTO)
 
 	if jsonBindErr != nil {
-		restError := errors.ValidateError(jsonBindErr)
+		restError := validations.ErrorValidation(jsonBindErr)
 
 		c.JSON(restError.Code, restError)
 		return

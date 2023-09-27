@@ -7,7 +7,7 @@ const (
 	Instructor Role = "instructor"
 )
 
-func (r Role) Validate() bool {
+func (r Role) RoleValidation() bool {
 	switch r {
 	case Student, Instructor:
 		return true

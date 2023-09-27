@@ -1,8 +1,6 @@
 package use_cases
 
 import (
-	"fmt"
-
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 )
@@ -28,8 +26,6 @@ func NewDefaultCreateUserUseCase(userRepository repositories.UserRepositoryInter
 
 func (uc *DefaultCreateUserUseCase) Execute(input CreateUserUseCaseInput) (*enterprise.User, error) {
 	newUser := enterprise.NewUser(input.Name, input.Role)
-
-	fmt.Println(newUser.GetID())
 
 	err := uc.UserRepository.Create(newUser)
 
