@@ -33,19 +33,22 @@ func main() {
 	// Question
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
 	getQuestionBySlugUseCase := uc.NewDefaulGetQuestionBySlugUseCase(questionSQLCRepository)
-	getQuestionBySlugController := ctrl.NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase)
+	getQuestionBySlugController := ctrl.NewDefaultGetQuestionBySlugController(getQuestionBySlugUseCase)
 	createQuestionUseCase := uc.NewDefaultCreateQuestionUseCase(questionSQLCRepository)
 	createQuestionController := ctrl.NewDefaultCreateQuestionController(createQuestionUseCase)
+	deleteQuestionByIDUseCase := uc.NewDefaultDeleteQuestionByIDUseCase(questionSQLCRepository)
+	deleteQuestionByIDController := ctrl.NewDefaultDeleteQuestionByIDController(deleteQuestionByIDUseCase)
+
+	questionControllers := ctrl.QuestionControllers{
+		CreateQuestionController:     createQuestionController,
+		GetQuestionBySlugController:  getQuestionBySlugController,
+		DeleteQuestionByIDController: deleteQuestionByIDController,
+	}
 
 	// User
 	userSQLCRepository := repositories.NewUserSQLCRepository(dt)
 	createUserUseCase := uc.NewDefaultCreateUserUseCase(userSQLCRepository)
 	createUserController := ctrl.NewDefaultCreateUserController(createUserUseCase)
-
-	questionControllers := ctrl.QuestionControllers{
-		CreateQuestionController:    createQuestionController,
-		GetQuestionBySlugController: getQuestionBySlugController,
-	}
 
 	userControllers := ctrl.UserControllers{
 		CreateUserController: createUserController,

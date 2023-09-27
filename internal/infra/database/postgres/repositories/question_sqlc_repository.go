@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
@@ -47,7 +48,28 @@ func (r *QuestionSQLCRepository) GetBySlug(slug string) (*enterprise.Question, e
 }
 
 func (r *QuestionSQLCRepository) GetByID(id string) (*enterprise.Question, error) {
-	return nil, nil
+	questionID, err := uuid.Parse(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result, getQuestionByIDErr := r.db.GetQuestionByID(context.Background(), questionID)
+
+	if getQuestionByIDErr != nil {
+		return nil, getQuestionByIDErr
+	}
+
+	attachments := enterprise.NewQuestionAttachmentsList([]interface{}{})
+
+	return enterprise.NewQuestion(
+		result.Title,
+		result.Content,
+		result.AuthorID.String(),
+		enterprise.QuestionOptionalParams{
+			BestAnswerID: result.BestAnswerID.UUID.String(),
+			Attachments:  *attachments,
+		}), nil
 }
 
 func (r *QuestionSQLCRepository) GetManyRecent(page int64) (*[]enterprise.Question, error) {
@@ -100,5 +122,20 @@ func (r *QuestionSQLCRepository) Save(question *enterprise.Question) error {
 }
 
 func (r *QuestionSQLCRepository) DeleteByID(id string) error {
+	questionID, err := uuid.Parse(id)
+
+	if err != nil {
+		return err
+	}
+
+	deleteQuestionErr := r.db.DeleteQuestionByID(context.Background(), s.DeleteQuestionByIDParams{
+		QuestionID: questionID,
+		UpdatedAt:  time.Now(),
+	})
+
+	if deleteQuestionErr != nil {
+		return deleteQuestionErr
+	}
+
 	return nil
 }
