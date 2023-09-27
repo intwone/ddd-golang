@@ -30,20 +30,29 @@ func main() {
 
 	router := gin.Default()
 
+	// Question
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
-
 	getQuestionBySlugUseCase := uc.NewDefaulGetQuestionBySlugUseCase(questionSQLCRepository)
 	getQuestionBySlugController := ctrl.NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase)
-
 	createQuestionUseCase := uc.NewDefaultCreateQuestionUseCase(questionSQLCRepository)
 	createQuestionController := ctrl.NewDefaultCreateQuestionController(createQuestionUseCase)
 
-	controllers := ctrl.Controllers{
-		GetQuestionBySlugController: getQuestionBySlugController,
+	// User
+	userSQLCRepository := repositories.NewUserSQLCRepository(dt)
+	createUserUseCase := uc.NewDefaultCreateUserUseCase(userSQLCRepository)
+	createUserController := ctrl.NewDefaultCreateUserController(createUserUseCase)
+
+	questionControllers := ctrl.QuestionControllers{
 		CreateQuestionController:    createQuestionController,
+		GetQuestionBySlugController: getQuestionBySlugController,
 	}
 
-	routes.SetupQuestionRoutes(router, controllers)
+	userControllers := ctrl.UserControllers{
+		CreateUserController: createUserController,
+	}
+
+	routes.SetupQuestionRoutes(router, questionControllers)
+	routes.SetupUserRoutes(router, userControllers)
 
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)

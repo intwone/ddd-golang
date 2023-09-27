@@ -7,28 +7,28 @@ import (
 	"github.com/gin-gonic/gin"
 
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
-	re "github.com/intwone/ddd-golang/internal/presentation/errors"
+	"github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/mappers"
 )
 
-type DefaultGetQuestionBySlugInterface struct {
+type DefaultGetQuestionBySlugControllerInterface struct {
 	GetQuestionBySlugUseCase uc.GetQuestionBySlugUseCaseInterface
 }
 
-func NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase uc.GetQuestionBySlugUseCaseInterface) *DefaultGetQuestionBySlugInterface {
-	return &DefaultGetQuestionBySlugInterface{
+func NewDefaultGetQuestionBySlug(getQuestionBySlugUseCase uc.GetQuestionBySlugUseCaseInterface) *DefaultGetQuestionBySlugControllerInterface {
+	return &DefaultGetQuestionBySlugControllerInterface{
 		GetQuestionBySlugUseCase: getQuestionBySlugUseCase,
 	}
 }
 
-func (cqc *DefaultGetQuestionBySlugInterface) Handle(c *gin.Context) {
+func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
 	slug := c.Param("slug")
 
 	question, err := cqc.GetQuestionBySlugUseCase.Execute(uc.GetQuestionBySlugUseCaseInput{Slug: slug})
 
 	if err != nil {
 		if strings.Contains(err.Error(), "no rows") {
-			restErr := re.NewNotFoundError("question not found")
+			restErr := errors.NewNotFoundError("question not found")
 			c.JSON(restErr.Code, restErr)
 			return
 		}

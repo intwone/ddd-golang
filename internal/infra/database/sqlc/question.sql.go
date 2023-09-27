@@ -13,7 +13,7 @@ import (
 )
 
 const createQuestion = `-- name: CreateQuestion :exec
-insert into questions (question_id, author_id, best_answer_id, slug, title, content, is_active, updated_at) values ($1, $2, $3, $4, $5, $6, true, $7)
+insert into "questions" (question_id, author_id, best_answer_id, slug, title, content, is_active, updated_at) values ($1, $2, $3, $4, $5, $6, true, $7)
 `
 
 type CreateQuestionParams struct {
@@ -40,7 +40,7 @@ func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) 
 }
 
 const deleteQuestionByID = `-- name: DeleteQuestionByID :exec
-update questions set
+update "questions" set
   is_active = false,
   updated_at = $1
 where question_id = $2
@@ -57,7 +57,7 @@ func (q *Queries) DeleteQuestionByID(ctx context.Context, arg DeleteQuestionByID
 }
 
 const getManyQuestionRecent = `-- name: GetManyQuestionRecent :many
-select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from questions
+select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from "questions"
 where created_at >= now() - INTERVAL '3 days' 
 order by created_at desc 
 limit 10
@@ -98,7 +98,7 @@ func (q *Queries) GetManyQuestionRecent(ctx context.Context, offset int32) ([]Qu
 }
 
 const getQuestionByID = `-- name: GetQuestionByID :one
-select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from questions where question_id = $1 limit 1
+select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from "questions" where question_id = $1 limit 1
 `
 
 func (q *Queries) GetQuestionByID(ctx context.Context, questionID uuid.UUID) (Question, error) {
@@ -119,7 +119,7 @@ func (q *Queries) GetQuestionByID(ctx context.Context, questionID uuid.UUID) (Qu
 }
 
 const getQuestionBySlug = `-- name: GetQuestionBySlug :one
-select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from questions where slug = $1 limit 1
+select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from "questions" where slug = $1 limit 1
 `
 
 func (q *Queries) GetQuestionBySlug(ctx context.Context, slug string) (Question, error) {
@@ -140,7 +140,7 @@ func (q *Queries) GetQuestionBySlug(ctx context.Context, slug string) (Question,
 }
 
 const saveQuestion = `-- name: SaveQuestion :exec
-update questions set
+update "questions" set
   best_answer_id = $1,
   updated_at = $2
 where question_id = $3

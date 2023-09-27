@@ -43,7 +43,11 @@ func (uc *DefaultAnswerQuestionUseCase) Execute(input AnswerQuestionUseCaseInput
 
 	newAnswer.SetAttachments(*attachmentsList)
 
-	uc.AnswersRepository.Create(newAnswer)
+	err := uc.AnswersRepository.Create(newAnswer)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return newAnswer, nil
 }

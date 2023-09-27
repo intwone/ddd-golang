@@ -21,9 +21,9 @@ func NewDefaultCreateQuestionController(createQuestionUseCase uc.CreateQuestionU
 }
 
 func (cqc *DefaultCreateQuestionControllerInterface) Handle(c *gin.Context) {
-	var questionRequestDTO dtos.CreateQuestionRequestDTO
+	var createQuestionRequestDTO dtos.CreateQuestionRequestDTO
 
-	jsonBindErr := c.ShouldBindJSON(&questionRequestDTO)
+	jsonBindErr := c.ShouldBindJSON(&createQuestionRequestDTO)
 
 	if jsonBindErr != nil {
 		restError := errors.ValidateError(jsonBindErr)
@@ -33,9 +33,9 @@ func (cqc *DefaultCreateQuestionControllerInterface) Handle(c *gin.Context) {
 	}
 
 	_, useCaseErr := cqc.CreateQuestionUseCase.Execute(uc.CreateQuestionUseCaseInput{
-		AuthorID: questionRequestDTO.AuthorID,
-		Title:    questionRequestDTO.Title,
-		Content:  questionRequestDTO.Content,
+		AuthorID: createQuestionRequestDTO.AuthorID,
+		Title:    createQuestionRequestDTO.Title,
+		Content:  createQuestionRequestDTO.Content,
 	})
 
 	if useCaseErr != nil {

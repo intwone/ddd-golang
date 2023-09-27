@@ -35,9 +35,11 @@ func (m *MockAnswerRepositoryInterface) EXPECT() *MockAnswerRepositoryInterfaceM
 }
 
 // Create mocks base method.
-func (m *MockAnswerRepositoryInterface) Create(answer *enterprise.Answer) {
+func (m *MockAnswerRepositoryInterface) Create(answer *enterprise.Answer) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Create", answer)
+	ret := m.ctrl.Call(m, "Create", answer)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Create indicates an expected call of Create.

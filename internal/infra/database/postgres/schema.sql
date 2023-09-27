@@ -1,7 +1,7 @@
 CREATE TYPE "user_role" AS ENUM ('student', 'instructor');
 
 CREATE TABLE IF NOT EXISTS "users" (
-  "user_id" TEXT NOT NULL,
+  "user_id" UUID NOT NULL,
   "name" TEXT NOT NULL,
   "role" "user_role" DEFAULT 'student' NOT NULL,
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS questions (
   "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP NOT NULL,
   "updated_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
-  CONSTRAINT "question_pkey" PRIMARY KEY ("question_id")
+  CONSTRAINT "questions_pkey" PRIMARY KEY ("question_id")
 );
 
 CREATE TABLE "answers" (

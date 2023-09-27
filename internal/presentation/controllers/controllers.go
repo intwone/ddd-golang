@@ -1,6 +1,10 @@
 package controllers
 
-type Controllers struct {
+type QuestionControllers struct {
 	CreateQuestionController    *DefaultCreateQuestionControllerInterface
-	GetQuestionBySlugController *DefaultGetQuestionBySlugInterface
+	GetQuestionBySlugController *DefaultGetQuestionBySlugControllerInterface
+}
+
+type UserControllers struct {
+	CreateUserController *DefaultCreateUserControllerInterface
 }
