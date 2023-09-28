@@ -19,10 +19,10 @@ type User struct {
 }
 
 func NewUser(name string, email string, password string, role string, id ...string) (*User, error) {
-	e := vo.NewEmail(email)
+	e, err := vo.NewEmail(email)
 
 	if e == nil {
-		return nil, errors.New("invalid email")
+		return nil, err
 	}
 
 	p, errs := vo.NewPassword(password)
@@ -57,10 +57,18 @@ func (s *User) GetName() string {
 	return s.name
 }
 
+func (s *User) GetEmail() string {
+	return s.email.Value
+}
+
 func (s *User) GetPassword() string {
 	return s.password.ToStringPassword()
 }
 
 func (s *User) GetRole() string {
 	return s.role
+}
+
+func (s *User) SetPassword(password string) {
+	s.password = &vo.Password{Value: password}
 }

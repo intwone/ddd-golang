@@ -3,6 +3,7 @@ package use_cases
 import (
 	"errors"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	"github.com/intwone/ddd-golang/internal/domain/notification/application/repositories"
 	"github.com/intwone/ddd-golang/internal/domain/notification/enterprise"
 )
@@ -34,7 +35,7 @@ func (uc *DefaultReadNotificationUseCase) Execute(input ReadNotificationUseCaseI
 	}
 
 	if notification.GetRecipientID() != input.RecipientID {
-		return enterprise.Notification{}, errors.New("not allowed")
+		return enterprise.Notification{}, errors.New(constants.NotAllowedError)
 	}
 
 	notification.Read()

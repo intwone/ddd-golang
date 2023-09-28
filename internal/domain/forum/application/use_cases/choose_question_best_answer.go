@@ -3,6 +3,7 @@ package use_cases
 import (
 	"errors"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 	vo "github.com/intwone/ddd-golang/internal/domain/forum/enterprise/value_objects"
@@ -43,7 +44,7 @@ func (uc *DefaultChooseQuestionBestAnswerUseCase) Execute(input ChooseQuestionBe
 	}
 
 	if input.AuthorID != question.GetAuthorID() {
-		return nil, errors.New("not allowed")
+		return nil, errors.New(constants.NotAllowedError)
 	}
 
 	answerID := vo.NewUniqueID(question.GetAuthorID())

@@ -3,6 +3,7 @@ package use_cases
 import (
 	"errors"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 )
@@ -38,7 +39,7 @@ func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseI
 	}
 
 	if input.AuthorID != answer.GetAuthorID() {
-		return nil, errors.New("not allowed")
+		return nil, errors.New(constants.NotAllowedError)
 	}
 
 	currentAttachments, answerAttachmentErr := uc.AnswerAttachmentsRepository.GetManyByAnswerID(answer.GetID())

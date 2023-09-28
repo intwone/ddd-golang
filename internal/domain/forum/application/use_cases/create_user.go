@@ -3,6 +3,7 @@ package use_cases
 import (
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
+	"github.com/intwone/ddd-golang/internal/infra/hasher"
 )
 
 type CreateUserUseCaseInput struct {
@@ -18,11 +19,13 @@ type CreateUserUseCaseInterface interface {
 
 type DefaultCreateUserUseCase struct {
 	UserRepository repositories.UserRepositoryInterface
+	Hasher         hasher.HasherInterface
 }
 
-func NewDefaultCreateUserUseCase(userRepository repositories.UserRepositoryInterface) *DefaultCreateUserUseCase {
+func NewDefaultCreateUserUseCase(userRepository repositories.UserRepositoryInterface, hasher hasher.HasherInterface) *DefaultCreateUserUseCase {
 	return &DefaultCreateUserUseCase{
 		UserRepository: userRepository,
+		Hasher:         hasher,
 	}
 }
 
@@ -32,6 +35,14 @@ func (uc *DefaultCreateUserUseCase) Execute(input CreateUserUseCaseInput) (*ente
 	if err != nil {
 		return nil, err
 	}
+
+	hashedPassword, hashErr := uc.Hasher.Hash(input.Email)
+
+	if hashErr != nil {
+		return nil, hashErr
+	}
+
+	newUser.SetPassword(*hashedPassword)
 
 	createUserRepoErr := uc.UserRepository.Create(newUser)
 

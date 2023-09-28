@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/domain/forum/enterprise"
 	mock "github.com/intwone/ddd-golang/internal/test/mocks"
@@ -62,6 +63,6 @@ func TestDeleteQuestionCommentByIDUseCase_Execute(t *testing.T) {
 		result := useCase.Execute(input)
 
 		require.NotNil(t, result)
-		require.Equal(t, "not allowed", result.Error())
+		require.Equal(t, constants.NotAllowedError, result.Error())
 	})
 }

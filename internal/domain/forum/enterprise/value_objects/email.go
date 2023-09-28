@@ -1,19 +1,24 @@
 package value_objects
 
-import "regexp"
+import (
+	"errors"
+	"regexp"
+
+	"github.com/intwone/ddd-golang/internal/constants"
+)
 
 type Email struct {
 	Value string
 }
 
-func NewEmail(value string) *Email {
+func NewEmail(value string) (*Email, error) {
 	if !IsValidEmail(value) {
-		return nil
+		return nil, errors.New(constants.InvalidEmailError)
 	}
 
 	email := Email{Value: value}
 
-	return &email
+	return &email, nil
 }
 
 func IsValidEmail(value string) bool {

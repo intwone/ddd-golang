@@ -3,6 +3,7 @@ package use_cases
 import (
 	"errors"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	"github.com/intwone/ddd-golang/internal/domain/forum/application/repositories"
 )
 
@@ -33,7 +34,7 @@ func (uc *DefaultDeleteAnswerByIDUseCase) Execute(input DeleteAnswerByIDUseCaseI
 	}
 
 	if input.AuthorID != answer.GetAuthorID() {
-		return errors.New("not allowed")
+		return errors.New(constants.NotAllowedError)
 	}
 
 	uc.AnswerRepository.DeleteByID(input.ID)
