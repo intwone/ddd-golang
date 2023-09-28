@@ -1,6 +1,10 @@
 package value_objects
 
-import "unicode"
+import (
+	"unicode"
+
+	"github.com/intwone/ddd-golang/internal/constants"
+)
 
 type Password struct {
 	Value string
@@ -24,17 +28,17 @@ func IsValidPassword(value string) (bool, []string) {
 
 	if !HasMinimumCaracteres(value) {
 		valid = false
-		errors = append(errors, "the password must contain at least eight characters long")
+		errors = append(errors, constants.NotContainMinimumCaracteresPasswordError)
 	}
 
 	if !HasOneUpperCaseCaractere(value) {
 		valid = false
-		errors = append(errors, "the password must contain at least one uppercase character")
+		errors = append(errors, constants.NotContainUpperCaseCharacterePasswordError)
 	}
 
 	if !HasOneSpecialCaractere(value) {
 		valid = false
-		errors = append(errors, "the password must contain at least one special character")
+		errors = append(errors, constants.NotContainSpecialCharacterePasswordError)
 	}
 
 	return valid, errors

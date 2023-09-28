@@ -3,6 +3,7 @@ package value_objects_test
 import (
 	"testing"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	vo "github.com/intwone/ddd-golang/internal/domain/forum/enterprise/value_objects"
 	"github.com/stretchr/testify/require"
 )
@@ -20,7 +21,7 @@ func TestPassword_IsValid(t *testing.T) {
 		result, errs := vo.IsValidPassword(password)
 
 		require.Equal(t, false, result)
-		require.Equal(t, errs[0], "the password must be at least 8 characters long")
+		require.Equal(t, errs[0], constants.NotContainMinimumCaracteresPasswordError)
 	})
 
 	t.Run("should return false when password not contains at least 8 characters and not contains at least 1 uppercase caractere", func(t *testing.T) {
@@ -28,8 +29,8 @@ func TestPassword_IsValid(t *testing.T) {
 		result, errs := vo.IsValidPassword(password)
 
 		require.Equal(t, false, result)
-		require.Equal(t, errs[0], "the password must be at least 8 characters long")
-		require.Equal(t, errs[1], "the password must contain at least 1 uppercase character")
+		require.Equal(t, errs[0], constants.NotContainMinimumCaracteresPasswordError)
+		require.Equal(t, errs[1], constants.NotContainUpperCaseCharacterePasswordError)
 	})
 
 	t.Run("should return false when password not contains at least 8 characters and not contains at least 1 uppercase caractere and not contain at least one special character", func(t *testing.T) {
@@ -37,8 +38,8 @@ func TestPassword_IsValid(t *testing.T) {
 		result, errs := vo.IsValidPassword(password)
 
 		require.Equal(t, false, result)
-		require.Equal(t, errs[0], "the password must contain at least eight characters long")
-		require.Equal(t, errs[1], "the password must contain at least one uppercase character")
-		require.Equal(t, errs[2], "the password must contain at least one special character")
+		require.Equal(t, errs[0], constants.NotContainMinimumCaracteresPasswordError)
+		require.Equal(t, errs[1], constants.NotContainUpperCaseCharacterePasswordError)
+		require.Equal(t, errs[2], constants.NotContainSpecialCharacterePasswordError)
 	})
 }
