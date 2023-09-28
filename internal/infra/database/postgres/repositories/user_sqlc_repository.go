@@ -20,7 +20,24 @@ func NewUserSQLCRepository(db *s.Queries) repositories.UserRepositoryInterface {
 }
 
 func (r *UserSQLCRepository) GetByEmail(email string) (*enterprise.User, error) {
-	return nil, nil
+	result, err := r.db.GetUserByEmail(context.Background(), email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := enterprise.NewUser(
+		result.Name,
+		result.Email,
+		result.Password,
+		string(result.Role),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (r *UserSQLCRepository) Create(user *enterprise.User) error {
@@ -31,9 +48,11 @@ func (r *UserSQLCRepository) Create(user *enterprise.User) error {
 	}
 
 	createUserErr := r.db.CreateUser(context.Background(), s.CreateUserParams{
-		UserID: userID,
-		Name:   user.GetName(),
-		Role:   s.UserRole(user.GetRole()),
+		UserID:   userID,
+		Name:     user.GetName(),
+		Email:    user.GetEmail(),
+		Password: user.GetPassword(),
+		Role:     s.UserRole(user.GetRole()),
 	})
 
 	if createUserErr != nil {

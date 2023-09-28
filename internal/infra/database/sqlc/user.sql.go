@@ -7,21 +7,51 @@ package postgres
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 )
 
 const createUser = `-- name: CreateUser :exec
-insert into "users" (user_id, name, role) values ($1, $2, $3)
+insert into "users" (user_id, name, email, password, role, updated_at) values ($1, $2, $3, $4, $5, $6)
 `
 
 type CreateUserParams struct {
-	UserID uuid.UUID
-	Name   string
-	Role   UserRole
+	UserID    uuid.UUID
+	Name      string
+	Email     string
+	Password  string
+	Role      UserRole
+	UpdatedAt time.Time
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
-	_, err := q.db.ExecContext(ctx, createUser, arg.UserID, arg.Name, arg.Role)
+	_, err := q.db.ExecContext(ctx, createUser,
+		arg.UserID,
+		arg.Name,
+		arg.Email,
+		arg.Password,
+		arg.Role,
+		arg.UpdatedAt,
+	)
 	return err
+}
+
+const getUserByEmail = `-- name: GetUserByEmail :one
+select user_id, name, email, password, role, created_at, updated_at from "users" where email = $1 limit 1
+`
+
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
+	var i User
+	err := row.Scan(
+		&i.UserID,
+		&i.Name,
+		&i.Email,
+		&i.Password,
+		&i.Role,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }

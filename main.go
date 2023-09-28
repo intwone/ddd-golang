@@ -9,6 +9,7 @@ import (
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/infra/database/postgres/repositories"
 	s "github.com/intwone/ddd-golang/internal/infra/database/sqlc"
+	"github.com/intwone/ddd-golang/internal/infra/hasher"
 	"github.com/intwone/ddd-golang/internal/main/routes"
 	ctrl "github.com/intwone/ddd-golang/internal/presentation/controllers"
 	"github.com/joho/godotenv"
@@ -45,10 +46,14 @@ func main() {
 		DeleteQuestionByIDController: deleteQuestionByIDController,
 	}
 
+	// Hasher
+	bcryptHasher := hasher.NewBcryptHasher()
+
 	// User
 	userSQLCRepository := repositories.NewUserSQLCRepository(dt)
-	createUserUseCase := uc.NewDefaultCreateUserUseCase(userSQLCRepository)
-	signUpController := ctrl.NewDefaultSignUpController(createUserUseCase)
+	createUserUseCase := uc.NewDefaultCreateUserUseCase(userSQLCRepository, bcryptHasher)
+	getUserByEmailUseCase := uc.NewDefaulGetUserByEmailUseCase(userSQLCRepository)
+	signUpController := ctrl.NewDefaultSignUpController(createUserUseCase, getUserByEmailUseCase)
 
 	userControllers := ctrl.UserControllers{
 		SignUpController: signUpController,
