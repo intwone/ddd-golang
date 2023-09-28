@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/mappers"
@@ -27,8 +28,8 @@ func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
 	question, err := cqc.GetQuestionBySlugUseCase.Execute(uc.GetQuestionBySlugUseCaseInput{Slug: slug})
 
 	if err != nil {
-		if strings.Contains(err.Error(), "no rows") {
-			restErr := errors.NewNotFoundError("question not found")
+		if strings.Contains(err.Error(), constants.NoRowsFound) {
+			restErr := errors.NewNotFoundError(constants.QuestionNotFoundError)
 			c.JSON(restErr.Code, restErr)
 			return
 		}

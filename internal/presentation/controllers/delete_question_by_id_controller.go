@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
+	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/errors"
 )
@@ -25,7 +26,7 @@ func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) 
 	id := c.Param("id")
 
 	if _, err := uuid.Parse(id); err != nil {
-		restErr := errors.NewBadRequestError("id must be a valid UUID")
+		restErr := errors.NewBadRequestError(constants.InvalidUUIDError)
 		c.JSON(restErr.Code, restErr)
 		return
 	}
@@ -34,14 +35,14 @@ func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) 
 	err := dqc.DeleteQuestionByIDUseCase.Execute(uc.DeleteQuestionByIDUseCaseInput{ID: id})
 
 	if err != nil {
-		if strings.Contains(err.Error(), "no rows") {
-			restErr := errors.NewNotFoundError("question not found")
+		if strings.Contains(err.Error(), constants.NoRowsFound) {
+			restErr := errors.NewNotFoundError(constants.QuestionNotFoundError)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
 
-		if strings.Contains(err.Error(), "not allowed") {
-			restErr := errors.NewUnauthorizedError("you cant delete this question")
+		if strings.Contains(err.Error(), constants.NotAllowedError) {
+			restErr := errors.NewUnauthorizedError(constants.NotAllowedError)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
