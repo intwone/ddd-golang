@@ -47,3 +47,18 @@ func (mr *MockUserRepositoryInterfaceMockRecorder) Create(user interface{}) *gom
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserRepositoryInterface)(nil).Create), user)
 }
+
+// GetByEmail mocks base method.
+func (m *MockUserRepositoryInterface) GetByEmail(email string) (*enterprise.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByEmail", email)
+	ret0, _ := ret[0].(*enterprise.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByEmail indicates an expected call of GetByEmail.
+func (mr *MockUserRepositoryInterfaceMockRecorder) GetByEmail(email interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByEmail", reflect.TypeOf((*MockUserRepositoryInterface)(nil).GetByEmail), email)
+}

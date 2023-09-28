@@ -11,20 +11,20 @@ import (
 	"github.com/intwone/ddd-golang/internal/presentation/validations"
 )
 
-type DefaultCreateUserControllerInterface struct {
+type DefaultSignUpControllerInterface struct {
 	CreateUserUseCase uc.CreateUserUseCaseInterface
 }
 
-func NewDefaultCreateUserController(createUserUseCase uc.CreateUserUseCaseInterface) *DefaultCreateUserControllerInterface {
-	return &DefaultCreateUserControllerInterface{
+func NewDefaultSignUpController(createUserUseCase uc.CreateUserUseCaseInterface) *DefaultSignUpControllerInterface {
+	return &DefaultSignUpControllerInterface{
 		CreateUserUseCase: createUserUseCase,
 	}
 }
 
-func (cuc *DefaultCreateUserControllerInterface) Handle(c *gin.Context) {
-	var createUserRequestDTO dtos.CreateUserRequestDTO
+func (cuc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
+	var signUpRequestDTO dtos.SignUpRequestDTO
 
-	jsonBindErr := c.ShouldBindJSON(&createUserRequestDTO)
+	jsonBindErr := c.ShouldBindJSON(&signUpRequestDTO)
 
 	if jsonBindErr != nil {
 		restError := validations.ErrorValidation(jsonBindErr)
@@ -33,15 +33,19 @@ func (cuc *DefaultCreateUserControllerInterface) Handle(c *gin.Context) {
 		return
 	}
 
-	if !createUserRequestDTO.Role.RoleValidation() {
-		restErr := errors.NewBadRequestError("role should be student or instructor")
+	if !signUpRequestDTO.Role.RoleValidation() {
+		restErr := errors.NewBadRequestError("role must be student or instructor")
 		c.JSON(restErr.Code, restErr)
 		return
 	}
 
+	// finduserbyemail
+
 	_, useCaseErr := cuc.CreateUserUseCase.Execute(uc.CreateUserUseCaseInput{
-		Name: createUserRequestDTO.Name,
-		Role: string(createUserRequestDTO.Role),
+		Name:     signUpRequestDTO.Name,
+		Email:    signUpRequestDTO.Email,
+		Password: signUpRequestDTO.Password,
+		Role:     string(signUpRequestDTO.Role),
 	})
 
 	if useCaseErr != nil {

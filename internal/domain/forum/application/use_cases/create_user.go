@@ -6,8 +6,10 @@ import (
 )
 
 type CreateUserUseCaseInput struct {
-	Name string
-	Role string
+	Name     string
+	Email    string
+	Password string
+	Role     string
 }
 
 type CreateUserUseCaseInterface interface {
@@ -25,12 +27,16 @@ func NewDefaultCreateUserUseCase(userRepository repositories.UserRepositoryInter
 }
 
 func (uc *DefaultCreateUserUseCase) Execute(input CreateUserUseCaseInput) (*enterprise.User, error) {
-	newUser := enterprise.NewUser(input.Name, input.Role)
-
-	err := uc.UserRepository.Create(newUser)
+	newUser, err := enterprise.NewUser(input.Name, input.Email, input.Password, input.Role)
 
 	if err != nil {
 		return nil, err
+	}
+
+	createUserRepoErr := uc.UserRepository.Create(newUser)
+
+	if createUserRepoErr != nil {
+		return nil, createUserRepoErr
 	}
 
 	return newUser, nil

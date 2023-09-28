@@ -19,11 +19,11 @@ func NewAnswerAttachment(attachmentID string, answerID string) *AnswerAttachment
 }
 
 func (ac *AnswerAttachment) GetAnswerID() string {
-	return ac.answerID.ToString()
+	return ac.answerID.ToStringUniqueID()
 }
 
 func (ac *AnswerAttachment) GetAttachmentID() string {
-	return ac.attachmentID.ToString()
+	return ac.attachmentID.ToStringUniqueID()
 }
 
 func (ac *AnswerAttachment) SetAttachmentID(attachmentID vo.UniqueID) {

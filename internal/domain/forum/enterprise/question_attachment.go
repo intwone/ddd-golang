@@ -19,11 +19,11 @@ func NewQuestionAttachment(attachmentID string, questionID string) *QuestionAtta
 }
 
 func (ac *QuestionAttachment) GetQuestionID() string {
-	return ac.questionID.ToString()
+	return ac.questionID.ToStringUniqueID()
 }
 
 func (ac *QuestionAttachment) GetAttachmentID() string {
-	return ac.attachmentID.ToString()
+	return ac.attachmentID.ToStringUniqueID()
 }
 
 func (ac *QuestionAttachment) SetAttachmentID(attachmentID vo.UniqueID) {

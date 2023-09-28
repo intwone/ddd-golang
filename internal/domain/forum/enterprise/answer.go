@@ -50,7 +50,7 @@ func NewAnswer(content string, authorID string, questionID string, params ...Ans
 }
 
 func (a *Answer) GetID() string {
-	return a.id.ToString()
+	return a.id.ToStringUniqueID()
 }
 
 func (a *Answer) GetContent() string {
@@ -62,11 +62,11 @@ func (a *Answer) GetAttachments() AnswerAttachmentsList {
 }
 
 func (a *Answer) GetAuthorID() string {
-	return a.authorID.ToString()
+	return a.authorID.ToStringUniqueID()
 }
 
 func (a *Answer) GetQuestionID() string {
-	return a.questionID.ToString()
+	return a.questionID.ToStringUniqueID()
 }
 
 func (a *Answer) GetExcerpt() string {

@@ -7,5 +7,5 @@ import (
 
 func SetupUserRoutes(r *gin.Engine, controllers ctrl.UserControllers) {
 	userGroup := r.Group("/api/users")
-	userGroup.POST("/", controllers.CreateUserController.Handle)
+	userGroup.POST("/", controllers.SignUpController.Handle)
 }

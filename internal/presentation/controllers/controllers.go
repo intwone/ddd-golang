@@ -7,5 +7,5 @@ type QuestionControllers struct {
 }
 
 type UserControllers struct {
-	CreateUserController *DefaultCreateUserControllerInterface
+	SignUpController *DefaultSignUpControllerInterface
 }

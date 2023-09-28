@@ -41,11 +41,11 @@ func NewNotification(title string, content string, recipientID string, params ..
 }
 
 func (n *Notification) GetID() string {
-	return n.id.ToString()
+	return n.id.ToStringUniqueID()
 }
 
 func (n *Notification) GetRecipientID() string {
-	return n.recipientID.ToString()
+	return n.recipientID.ToStringUniqueID()
 }
 
 func (n *Notification) GeTitle() string {

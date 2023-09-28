@@ -19,5 +19,5 @@ func NewQuestionComment(content string, authorID string, questionID string) *Que
 }
 
 func (qc *QuestionComment) GetQuestionID() string {
-	return qc.questionID.ToString()
+	return qc.questionID.ToStringUniqueID()
 }

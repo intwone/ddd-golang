@@ -26,7 +26,7 @@ func NewAttachment(title string, link string, id ...string) *Attachment {
 }
 
 func (a *Attachment) GetID() string {
-	return a.id.ToString()
+	return a.id.ToStringUniqueID()
 }
 
 func (a *Attachment) GetTitle() string {

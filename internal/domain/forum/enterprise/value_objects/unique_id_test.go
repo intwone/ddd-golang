@@ -11,7 +11,7 @@ import (
 func TestUnique_ID_ToString(t *testing.T) {
 	t.Run("should create an uuid", func(t *testing.T) {
 		id := vo.NewUniqueID()
-		idToString := id.ToString()
+		idToString := id.ToStringUniqueID()
 
 		_, err := uuid.Parse(idToString)
 

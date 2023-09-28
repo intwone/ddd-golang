@@ -1,6 +1,8 @@
 package enterprise
 
 import (
+	"errors"
+	"strings"
 	"time"
 
 	vo "github.com/intwone/ddd-golang/internal/domain/forum/enterprise/value_objects"
@@ -9,15 +11,32 @@ import (
 type User struct {
 	id        *vo.UniqueID
 	name      string
+	email     *vo.Email
+	password  *vo.Password
 	role      string
 	createdAt time.Time
 	updatedAt *time.Time
 }
 
-func NewUser(name string, role string, id ...string) *User {
+func NewUser(name string, email string, password string, role string, id ...string) (*User, error) {
+	e := vo.NewEmail(email)
+
+	if e == nil {
+		return nil, errors.New("invalid email")
+	}
+
+	p, errs := vo.NewPassword(password)
+
+	if p == nil {
+		errs := strings.Join(errs, ",")
+		return nil, errors.New(errs)
+	}
+
 	user := User{
 		name:      name,
 		role:      role,
+		email:     e,
+		password:  p,
 		createdAt: time.Now(),
 	}
 
@@ -27,15 +46,19 @@ func NewUser(name string, role string, id ...string) *User {
 		user.id = vo.NewUniqueID()
 	}
 
-	return &user
+	return &user, nil
 }
 
 func (s *User) GetID() string {
-	return s.id.ToString()
+	return s.id.ToStringUniqueID()
 }
 
 func (s *User) GetName() string {
 	return s.name
+}
+
+func (s *User) GetPassword() string {
+	return s.password.ToStringPassword()
 }
 
 func (s *User) GetRole() string {

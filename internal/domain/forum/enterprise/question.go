@@ -60,11 +60,11 @@ func NewQuestion(title string, content string, authorID string, params ...Questi
 }
 
 func (q *Question) GetID() string {
-	return q.id.ToString()
+	return q.id.ToStringUniqueID()
 }
 
 func (q *Question) GetAuthorID() string {
-	return q.authorID.ToString()
+	return q.authorID.ToStringUniqueID()
 }
 
 func (q *Question) GetSlug() vo.Slug {
@@ -84,7 +84,7 @@ func (q *Question) GetAttachments() QuestionAttachmentsList {
 }
 
 func (q *Question) GetBestAnswerID() string {
-	return q.bestAnswerID.ToString()
+	return q.bestAnswerID.ToStringUniqueID()
 }
 
 func (q *Question) GetCreatedAt() *time.Time {

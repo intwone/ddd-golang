@@ -31,11 +31,11 @@ func NewComment(content string, authorID string, id ...string) *Comment {
 }
 
 func (c *Comment) GetID() string {
-	return c.id.ToString()
+	return c.id.ToStringUniqueID()
 }
 
 func (c *Comment) GetAuthorID() string {
-	return c.authorID.ToString()
+	return c.authorID.ToStringUniqueID()
 }
 
 func (c *Comment) GetContent() string {

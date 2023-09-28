@@ -19,6 +19,10 @@ func NewUserSQLCRepository(db *s.Queries) repositories.UserRepositoryInterface {
 	}
 }
 
+func (r *UserSQLCRepository) GetByEmail(email string) (*enterprise.User, error) {
+	return nil, nil
+}
+
 func (r *UserSQLCRepository) Create(user *enterprise.User) error {
 	userID, err := uuid.Parse(user.GetID())
 

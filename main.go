@@ -48,10 +48,10 @@ func main() {
 	// User
 	userSQLCRepository := repositories.NewUserSQLCRepository(dt)
 	createUserUseCase := uc.NewDefaultCreateUserUseCase(userSQLCRepository)
-	createUserController := ctrl.NewDefaultCreateUserController(createUserUseCase)
+	signUpController := ctrl.NewDefaultSignUpController(createUserUseCase)
 
 	userControllers := ctrl.UserControllers{
-		CreateUserController: createUserController,
+		SignUpController: signUpController,
 	}
 
 	routes.SetupQuestionRoutes(router, questionControllers)

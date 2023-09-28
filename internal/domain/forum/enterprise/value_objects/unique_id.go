@@ -21,7 +21,7 @@ func NewUniqueID(value ...string) *UniqueID {
 	return &uniqueID
 }
 
-func (u *UniqueID) ToString() string {
+func (u *UniqueID) ToStringUniqueID() string {
 	if u != nil {
 		return *u.Value
 	}

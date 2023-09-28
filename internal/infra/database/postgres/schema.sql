@@ -3,7 +3,11 @@ CREATE TYPE "user_role" AS ENUM ('student', 'instructor');
 CREATE TABLE IF NOT EXISTS "users" (
   "user_id" UUID NOT NULL,
   "name" TEXT NOT NULL,
+  "email" TEXT NOT NULL,
+  "password" TEXT NOT NULL,
   "role" "user_role" DEFAULT 'student' NOT NULL,
+  "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  "updated_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
   CONSTRAINT "users_pkey" PRIMARY KEY ("user_id")
 );
