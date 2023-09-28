@@ -31,6 +31,14 @@ func NewBadRequestError(message string) *RestError {
 	}
 }
 
+func NewConflictError(message string) *RestError {
+	return &RestError{
+		Message: message,
+		Err:     "conflict",
+		Code:    http.StatusConflict,
+	}
+}
+
 func NewBadRequestValidationError(message string, causes []Cause) *RestError {
 	return &RestError{
 		Message: message,
