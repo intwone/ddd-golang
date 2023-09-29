@@ -1,6 +1,7 @@
 package value_objects
 
 import (
+	"errors"
 	"unicode"
 
 	"github.com/intwone/ddd-golang/internal/constants"
@@ -10,10 +11,10 @@ type Password struct {
 	Value string
 }
 
-func NewPassword(value string) (*Password, []string) {
-	isValid, errs := IsValidPassword(value)
+func NewPassword(value string) (*Password, []error) {
+	errs := IsValidPassword(value)
 
-	if !isValid {
+	if len(errs) > 0 {
 		return nil, errs
 	}
 
@@ -22,26 +23,22 @@ func NewPassword(value string) (*Password, []string) {
 	return &password, nil
 }
 
-func IsValidPassword(value string) (bool, []string) {
-	errors := []string{}
-	valid := true
+func IsValidPassword(value string) []error {
+	errs := []error{}
 
 	if !HasMinimumCaracteres(value) {
-		valid = false
-		errors = append(errors, constants.NotContainMinimumCaracteresPasswordError)
+		errs = append(errs, errors.New(constants.NotContainMinimumCaracteresPasswordError))
 	}
 
 	if !HasOneUpperCaseCaractere(value) {
-		valid = false
-		errors = append(errors, constants.NotContainUpperCaseCharacterePasswordError)
+		errs = append(errs, errors.New(constants.NotContainUpperCaseCharacterePasswordError))
 	}
 
 	if !HasOneSpecialCaractere(value) {
-		valid = false
-		errors = append(errors, constants.NotContainSpecialCharacterePasswordError)
+		errs = append(errs, errors.New(constants.NotContainSpecialCharacterePasswordError))
 	}
 
-	return valid, errors
+	return errs
 }
 
 func HasMinimumCaracteres(value string) bool {
