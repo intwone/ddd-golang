@@ -64,3 +64,7 @@ func (n *Notification) Read() {
 	now := time.Now()
 	n.readAt = &now
 }
+
+func (n *Notification) CanModify(recipientID string) bool {
+	return n.recipientID.ToStringUniqueID() == recipientID
+}

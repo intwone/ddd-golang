@@ -14,7 +14,7 @@ type CreateUserUseCaseInput struct {
 }
 
 type CreateUserUseCaseInterface interface {
-	Execute(input CreateUserUseCaseInput) (*enterprise.User, error)
+	Execute(input CreateUserUseCaseInput) (*enterprise.User, []error)
 }
 
 type DefaultCreateUserUseCase struct {
@@ -29,17 +29,17 @@ func NewDefaultCreateUserUseCase(userRepository repositories.UserRepositoryInter
 	}
 }
 
-func (uc *DefaultCreateUserUseCase) Execute(input CreateUserUseCaseInput) (*enterprise.User, error) {
-	newUser, err := enterprise.NewUser(input.Name, input.Email, input.Password, input.Role)
+func (uc *DefaultCreateUserUseCase) Execute(input CreateUserUseCaseInput) (*enterprise.User, []error) {
+	newUser, newUserErrs := enterprise.NewUser(input.Name, input.Email, input.Password, input.Role)
 
-	if err != nil {
-		return nil, err
+	if len(newUserErrs) > 0 {
+		return nil, newUserErrs
 	}
 
-	hashedPassword, hashErr := uc.Hasher.Hash(input.Email)
+	hashedPassword, hashErr := uc.Hasher.Hash(input.Password)
 
 	if hashErr != nil {
-		return nil, hashErr
+		return nil, []error{hashErr}
 	}
 
 	newUser.SetPassword(*hashedPassword)
@@ -47,7 +47,7 @@ func (uc *DefaultCreateUserUseCase) Execute(input CreateUserUseCaseInput) (*ente
 	createUserRepoErr := uc.UserRepository.Create(newUser)
 
 	if createUserRepoErr != nil {
-		return nil, createUserRepoErr
+		return nil, []error{createUserRepoErr}
 	}
 
 	return newUser, nil

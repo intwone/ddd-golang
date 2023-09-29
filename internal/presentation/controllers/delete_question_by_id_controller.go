@@ -26,7 +26,11 @@ func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) 
 	id := c.Param("id")
 
 	if _, err := uuid.Parse(id); err != nil {
-		restErr := errors.NewBadRequestError(constants.InvalidUUIDError)
+		causes := []errors.Cause{
+			{Field: "id", Message: constants.InvalidUUIDError},
+		}
+
+		restErr := errors.NewBadRequestError(constants.OccurredSameErrorsError, causes)
 		c.JSON(restErr.Code, restErr)
 		return
 	}
@@ -47,7 +51,8 @@ func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) 
 			return
 		}
 
-		c.JSON(http.StatusInternalServerError, err)
+		restErr := errors.NewInternalServerError(err.Error())
+		c.JSON(restErr.Code, restErr)
 		return
 	}
 

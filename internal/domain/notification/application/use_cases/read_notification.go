@@ -14,7 +14,7 @@ type ReadNotificationUseCaseInput struct {
 }
 
 type ReadNotificationUseCaseInterface interface {
-	Execute(input ReadNotificationUseCaseInput) (enterprise.Notification, error)
+	Execute(input ReadNotificationUseCaseInput) (*enterprise.Notification, error)
 }
 
 type DefaultReadNotificationUseCase struct {
@@ -27,23 +27,23 @@ func NewDefaultReadNotificationUseCase(notificationRepository repositories.Notif
 	}
 }
 
-func (uc *DefaultReadNotificationUseCase) Execute(input ReadNotificationUseCaseInput) (enterprise.Notification, error) {
+func (uc *DefaultReadNotificationUseCase) Execute(input ReadNotificationUseCaseInput) (*enterprise.Notification, error) {
 	notification, getByIdErr := uc.NotificationRepository.GetByID(input.NotificationID)
 
 	if getByIdErr != nil {
-		return enterprise.Notification{}, getByIdErr
+		return nil, getByIdErr
 	}
 
-	if notification.GetRecipientID() != input.RecipientID {
-		return enterprise.Notification{}, errors.New(constants.NotAllowedError)
+	if !notification.CanModify(input.RecipientID) {
+		return nil, errors.New(constants.NotAllowedError)
 	}
 
 	notification.Read()
 
-	createErr := uc.NotificationRepository.Save(&notification)
+	createErr := uc.NotificationRepository.Save(notification)
 
 	if createErr != nil {
-		return enterprise.Notification{}, createErr
+		return nil, createErr
 	}
 
 	return notification, nil

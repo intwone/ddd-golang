@@ -19,7 +19,7 @@ func TestReadNotificationUseCase_Execute(t *testing.T) {
 	t.Run("should read a notification", func(t *testing.T) {
 		notification := enterprise.NewNotification("Title Test", "Content test", "1")
 		repo := mock.NewMockNotificationsRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*notification, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(notification, nil).AnyTimes()
 		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultReadNotificationUseCase(repo)
 
@@ -35,9 +35,8 @@ func TestReadNotificationUseCase_Execute(t *testing.T) {
 	})
 
 	t.Run("should not read a notification when not found notification", func(t *testing.T) {
-		notification := enterprise.Notification{}
 		repo := mock.NewMockNotificationsRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(notification, errors.New("any")).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(nil, errors.New("any")).AnyTimes()
 		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultReadNotificationUseCase(repo)
 
@@ -46,16 +45,15 @@ func TestReadNotificationUseCase_Execute(t *testing.T) {
 			NotificationID: "1",
 		}
 
-		result, err := useCase.Execute(input)
+		_, err := useCase.Execute(input)
 
 		require.NotNil(t, err)
-		require.Nil(t, result.GetReadAt())
 	})
 
 	t.Run("should not read a notification from another user", func(t *testing.T) {
 		notification := enterprise.NewNotification("Title Test", "Content test", "2", enterprise.NotificationOptionalParams{ID: "1"})
 		repo := mock.NewMockNotificationsRepositoryInterface(ctrl)
-		repo.EXPECT().GetByID(gomock.Any()).Return(*notification, nil).AnyTimes()
+		repo.EXPECT().GetByID(gomock.Any()).Return(notification, nil).AnyTimes()
 		repo.EXPECT().Save(gomock.Any()).Return(nil).AnyTimes()
 		useCase := uc.NewDefaultReadNotificationUseCase(repo)
 

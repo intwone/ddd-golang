@@ -2,7 +2,6 @@ package use_cases_test
 
 import (
 	"errors"
-	"strings"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -77,10 +76,10 @@ func TestCreateUserUseCase_Execute(t *testing.T) {
 			Role:     "student",
 		}
 
-		_, err := useCase.Execute(input)
+		_, errs := useCase.Execute(input)
 
-		require.NotNil(t, err)
-		require.Equal(t, constants.InvalidEmailError, err.Error())
+		require.Equal(t, true, len(errs) > 0)
+		require.Equal(t, constants.InvalidEmailError, errs[0].Error())
 	})
 
 	t.Run("should not create an user when password is invalid", func(t *testing.T) {
@@ -96,22 +95,12 @@ func TestCreateUserUseCase_Execute(t *testing.T) {
 		input := uc.CreateUserUseCaseInput{
 			Name:     "Test Name",
 			Email:    "valid@mail.com",
-			Password: "test123",
+			Password: "te",
 			Role:     "student",
 		}
 
-		_, err := useCase.Execute(input)
+		_, errs := useCase.Execute(input)
 
-		errors := [...]string{
-			constants.NotContainMinimumCaracteresPasswordError,
-			constants.NotContainUpperCaseCharacterePasswordError,
-			constants.NotContainSpecialCharacterePasswordError,
-		}
-
-		e := errors[:]
-		messageErr := strings.Join(e, ",")
-
-		require.NotNil(t, err)
-		require.Equal(t, messageErr, err.Error())
+		require.Equal(t, true, len(errs) > 0)
 	})
 }

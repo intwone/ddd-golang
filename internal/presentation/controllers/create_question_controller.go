@@ -7,6 +7,7 @@ import (
 
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
+	"github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/validations"
 )
 
@@ -39,7 +40,8 @@ func (cqc *DefaultCreateQuestionControllerInterface) Handle(c *gin.Context) {
 	})
 
 	if useCaseErr != nil {
-		c.JSON(http.StatusInternalServerError, useCaseErr)
+		restErr := errors.NewInternalServerError(useCaseErr.Error())
+		c.JSON(restErr.Code, restErr)
 		return
 	}
 

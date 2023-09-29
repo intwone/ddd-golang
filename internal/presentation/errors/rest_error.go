@@ -14,32 +14,16 @@ type Cause struct {
 	Message string `json:"message"`
 }
 
-func NewRestErr(message string, err string, code int, causes []Cause) *RestError {
-	return &RestError{
-		Message: message,
-		Err:     err,
-		Code:    code,
-		Causes:  causes,
-	}
-}
-
-func NewBadRequestError(message string) *RestError {
-	return &RestError{
-		Message: message,
-		Err:     "bad_request",
-		Code:    http.StatusBadRequest,
-	}
-}
-
-func NewConflictError(message string) *RestError {
+func NewConflictError(message string, causes []Cause) *RestError {
 	return &RestError{
 		Message: message,
 		Err:     "conflict",
 		Code:    http.StatusConflict,
+		Causes:  causes,
 	}
 }
 
-func NewBadRequestValidationError(message string, causes []Cause) *RestError {
+func NewBadRequestError(message string, causes []Cause) *RestError {
 	return &RestError{
 		Message: message,
 		Err:     "bad_request",
@@ -53,14 +37,6 @@ func NewInternalServerError(message string) *RestError {
 		Message: message,
 		Err:     "internal_server_error",
 		Code:    http.StatusInternalServerError,
-	}
-}
-
-func NewForbiddenError(message string) *RestError {
-	return &RestError{
-		Message: message,
-		Err:     "forbidden",
-		Code:    http.StatusForbidden,
 	}
 }
 
@@ -78,8 +54,4 @@ func NewUnauthorizedError(message string) *RestError {
 		Err:     "unauthorized",
 		Code:    http.StatusUnauthorized,
 	}
-}
-
-func (r *RestError) GetMessage() string {
-	return r.Message
 }

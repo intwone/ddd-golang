@@ -9,6 +9,7 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	en_translation "github.com/go-playground/validator/v10/translations/en"
+	"github.com/intwone/ddd-golang/internal/constants"
 	er "github.com/intwone/ddd-golang/internal/presentation/errors"
 )
 
@@ -33,11 +34,15 @@ func ErrorValidation(validationError error) *er.RestError {
 	var jsonValidationError validator.ValidationErrors
 
 	if errors.As(validationError, &jsonError) {
-		return er.NewBadRequestError("invalid field type")
+		causes := []er.Cause{
+			{Field: "", Message: constants.UnMarshalJSONError},
+		}
+
+		return er.NewBadRequestError(constants.InvalidFieldTypeError, causes)
 	}
 
 	if errors.As(validationError, &jsonValidationError) {
-		errorsCauses := []er.Cause{}
+		causes := []er.Cause{}
 
 		for _, e := range validationError.(validator.ValidationErrors) {
 			cause := er.Cause{
@@ -45,11 +50,15 @@ func ErrorValidation(validationError error) *er.RestError {
 				Field:   e.Field(),
 			}
 
-			errorsCauses = append(errorsCauses, cause)
+			causes = append(causes, cause)
 		}
 
-		return er.NewBadRequestValidationError("some fields are invalids", errorsCauses)
+		return er.NewBadRequestError(constants.InvalidFieldsError, causes)
 	}
 
-	return er.NewBadRequestError("error trying to convert fields")
+	causes := []er.Cause{
+		{Field: "", Message: constants.ConvertFieldsError},
+	}
+
+	return er.NewBadRequestError(constants.InvalidFieldsError, causes)
 }

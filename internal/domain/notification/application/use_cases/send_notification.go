@@ -12,7 +12,7 @@ type SendNotificationUseCaseInput struct {
 }
 
 type SendNotificationUseCaseInterface interface {
-	Execute(input SendNotificationUseCaseInput) (enterprise.Notification, error)
+	Execute(input SendNotificationUseCaseInput) (*enterprise.Notification, error)
 }
 
 type DefaultSendNotificationUseCase struct {
@@ -25,14 +25,14 @@ func NewDefaultSendNotificationUseCase(notificationRepository repositories.Notif
 	}
 }
 
-func (uc *DefaultSendNotificationUseCase) Execute(input SendNotificationUseCaseInput) (enterprise.Notification, error) {
+func (uc *DefaultSendNotificationUseCase) Execute(input SendNotificationUseCaseInput) (*enterprise.Notification, error) {
 	newNotification := enterprise.NewNotification(input.Title, input.Content, input.RecipientID)
 
 	err := uc.NotificationRepository.Create(newNotification)
 
 	if err != nil {
-		return enterprise.Notification{}, err
+		return nil, err
 	}
 
-	return enterprise.Notification{}, nil
+	return newNotification, nil
 }

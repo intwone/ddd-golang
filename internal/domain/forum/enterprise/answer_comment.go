@@ -21,3 +21,7 @@ func NewAnswerComment(content string, authorID string, answerID string) *AnswerC
 func (ac *AnswerComment) GetAnswerID() string {
 	return ac.answerID.ToStringUniqueID()
 }
+
+func (ac *AnswerComment) CanModify(authorID string) bool {
+	return ac.authorID.ToStringUniqueID() == authorID
+}

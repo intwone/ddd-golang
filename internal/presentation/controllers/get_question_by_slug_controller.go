@@ -8,6 +8,7 @@ import (
 
 	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
+	"github.com/intwone/ddd-golang/internal/presentation/dtos"
 	"github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/mappers"
 )
@@ -34,11 +35,12 @@ func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
 			return
 		}
 
-		c.JSON(http.StatusInternalServerError, err)
+		restErr := errors.NewInternalServerError(err.Error())
+		c.JSON(restErr.Code, restErr)
 		return
 	}
 
 	questionMapped := mappers.QuestionDTOMapper(question)
 
-	c.JSON(http.StatusOK, questionMapped)
+	c.JSON(http.StatusOK, dtos.ResponseDTO{"data": questionMapped})
 }
