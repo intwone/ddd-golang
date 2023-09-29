@@ -89,6 +89,10 @@ func (a *Answer) SetAttachments(attachments AnswerAttachmentsList) {
 	a.update()
 }
 
+func (a *Answer) CanModify(authorID string) bool {
+	return a.authorID.ToStringUniqueID() == authorID
+}
+
 func (a *Answer) update() {
 	now := time.Now()
 	a.updatedAt = &now

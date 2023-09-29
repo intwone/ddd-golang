@@ -124,6 +124,10 @@ func (q *Question) SetBestAnswerID(bestAnswerID vo.UniqueID) {
 	q.update()
 }
 
+func (q *Question) CanModify(authorID string) bool {
+	return q.authorID.ToStringUniqueID() == authorID
+}
+
 func (q *Question) update() {
 	now := time.Now()
 	q.updatedAt = &now

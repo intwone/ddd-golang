@@ -55,6 +55,10 @@ func (c *Comment) SetContent(content string) {
 	c.update()
 }
 
+func (c *Comment) CanModify(authorID string) bool {
+	return c.authorID.ToStringUniqueID() == authorID
+}
+
 func (c *Comment) update() {
 	now := time.Now()
 	c.updatedAt = &now

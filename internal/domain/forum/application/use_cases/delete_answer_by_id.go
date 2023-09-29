@@ -33,7 +33,7 @@ func (uc *DefaultDeleteAnswerByIDUseCase) Execute(input DeleteAnswerByIDUseCaseI
 		return err
 	}
 
-	if input.AuthorID != answer.GetAuthorID() {
+	if !answer.CanModify(input.AuthorID) {
 		return errors.New(constants.NotAllowedError)
 	}
 

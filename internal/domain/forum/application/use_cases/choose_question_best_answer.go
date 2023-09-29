@@ -43,7 +43,7 @@ func (uc *DefaultChooseQuestionBestAnswerUseCase) Execute(input ChooseQuestionBe
 		return nil, questionrGetByIDErr
 	}
 
-	if input.AuthorID != question.GetAuthorID() {
+	if !question.CanModify(input.AuthorID) {
 		return nil, errors.New(constants.NotAllowedError)
 	}
 
