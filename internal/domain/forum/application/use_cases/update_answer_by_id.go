@@ -38,7 +38,7 @@ func (uc *DefaultUpdateAnswerByIDUseCase) Execute(input UpdateAnswerByIDUseCaseI
 		return nil, err
 	}
 
-	if input.AuthorID != answer.GetAuthorID() {
+	if !answer.CanModify(input.AuthorID) {
 		return nil, errors.New(constants.NotAllowedError)
 	}
 
