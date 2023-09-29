@@ -14,6 +14,13 @@ type Cause struct {
 	Message string `json:"message"`
 }
 
+func NewCause(field string, message string) *Cause {
+	return &Cause{
+		Field:   field,
+		Message: message,
+	}
+}
+
 func NewConflictError(message string, causes []Cause) *RestError {
 	return &RestError{
 		Message: message,

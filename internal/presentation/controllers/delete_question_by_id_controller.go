@@ -9,7 +9,7 @@ import (
 
 	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
-	"github.com/intwone/ddd-golang/internal/presentation/errors"
+	er "github.com/intwone/ddd-golang/internal/presentation/errors"
 )
 
 type DefaultDeleteQuestionByIDControllerInterface struct {
@@ -26,11 +26,8 @@ func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) 
 	id := c.Param("id")
 
 	if _, err := uuid.Parse(id); err != nil {
-		causes := []errors.Cause{
-			{Field: "id", Message: constants.InvalidUUIDError},
-		}
-
-		restErr := errors.NewBadRequestError(constants.OccurredSameErrorsError, causes)
+		cause := er.NewCause("id", constants.InvalidUUIDError)
+		restErr := er.NewBadRequestError(constants.OccurredSameErrorsError, []er.Cause{*cause})
 		c.JSON(restErr.Code, restErr)
 		return
 	}
@@ -40,18 +37,18 @@ func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) 
 
 	if err != nil {
 		if strings.Contains(err.Error(), constants.NoRowsFound) {
-			restErr := errors.NewNotFoundError(constants.QuestionNotFoundError)
+			restErr := er.NewNotFoundError(constants.QuestionNotFoundError)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
 
 		if strings.Contains(err.Error(), constants.NotAllowedError) {
-			restErr := errors.NewUnauthorizedError(constants.NotAllowedError)
+			restErr := er.NewUnauthorizedError(constants.NotAllowedError)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
 
-		restErr := errors.NewInternalServerError(err.Error())
+		restErr := er.NewInternalServerError(err.Error())
 		c.JSON(restErr.Code, restErr)
 		return
 	}

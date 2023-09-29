@@ -8,7 +8,7 @@ import (
 	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
-	"github.com/intwone/ddd-golang/internal/presentation/errors"
+	er "github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/validations"
 )
 
@@ -40,41 +40,52 @@ func (ac *DefaultSignInControllerInterface) Handle(c *gin.Context) {
 	})
 
 	if len(useCaseErrs) > 0 {
-		var causes = []errors.Cause{}
-
-		for _, err := range useCaseErrs {
-			switch err.Error() {
-			case constants.InvalidEmailError:
-				cause := errors.Cause{Field: "email", Message: constants.InvalidEmailError}
-				causes = append(causes, cause)
-			case constants.NotContainMinimumCaracteresPasswordError:
-				cause := errors.Cause{Field: "password", Message: constants.NotContainMinimumCaracteresPasswordError}
-				causes = append(causes, cause)
-			case constants.NotContainUpperCaseCharacterePasswordError:
-				cause := errors.Cause{Field: "password", Message: constants.NotContainUpperCaseCharacterePasswordError}
-				causes = append(causes, cause)
-			case constants.NotContainSpecialCharacterePasswordError:
-				cause := errors.Cause{Field: "password", Message: constants.NotContainSpecialCharacterePasswordError}
-				causes = append(causes, cause)
-			case constants.NoRowsFound:
-				cause := errors.Cause{Field: "email/password", Message: constants.EmailOrPasswordIncorrectError}
-				causes = append(causes, cause)
-			case constants.PasswordAreNotTheSame:
-				cause := errors.Cause{Field: "email/password", Message: constants.EmailOrPasswordIncorrectError}
-				causes = append(causes, cause)
-			}
-		}
+		causes := handleSignInErrorCauses(useCaseErrs)
 
 		if len(causes) > 0 {
-			restErr := errors.NewBadRequestError(constants.OccurredSameErrorsError, causes)
+			restErr := er.NewBadRequestError(constants.OccurredSameErrorsError, causes)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
 
-		restErr := errors.NewInternalServerError(constants.UnexpectedError)
+		restErr := er.NewInternalServerError(constants.UnexpectedError)
 		c.JSON(restErr.Code, restErr)
 		return
 	}
 
 	c.JSON(http.StatusOK, dtos.ResponseDTO{"token": token})
+}
+
+func handleSignInErrorCauses(errs []error) []er.Cause {
+	var causes = []er.Cause{}
+
+	for _, err := range errs {
+		switch err.Error() {
+		case constants.InvalidEmailError:
+			cause := er.Cause{Field: "email", Message: constants.InvalidEmailError}
+			causes = append(causes, cause)
+
+		case constants.NotContainMinimumCaracteresPasswordError:
+			cause := er.Cause{Field: "password", Message: constants.NotContainMinimumCaracteresPasswordError}
+			causes = append(causes, cause)
+
+		case constants.NotContainUpperCaseCharacterePasswordError:
+			cause := er.Cause{Field: "password", Message: constants.NotContainUpperCaseCharacterePasswordError}
+			causes = append(causes, cause)
+
+		case constants.NotContainSpecialCharacterePasswordError:
+			cause := er.Cause{Field: "password", Message: constants.NotContainSpecialCharacterePasswordError}
+			causes = append(causes, cause)
+
+		case constants.NoRowsFound:
+			cause := er.Cause{Field: "email/password", Message: constants.EmailOrPasswordIncorrectError}
+			causes = append(causes, cause)
+
+		case constants.PasswordAreNotTheSame:
+			cause := er.Cause{Field: "email/password", Message: constants.EmailOrPasswordIncorrectError}
+			causes = append(causes, cause)
+		}
+	}
+
+	return causes
 }

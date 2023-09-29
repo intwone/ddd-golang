@@ -8,7 +8,7 @@ import (
 	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
-	"github.com/intwone/ddd-golang/internal/presentation/errors"
+	er "github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/validations"
 )
 
@@ -41,11 +41,8 @@ func (cuc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
 	})
 
 	if user != nil {
-		causes := []errors.Cause{
-			{Field: "email", Message: constants.EmailAlreadyTakenError},
-		}
-
-		restErr := errors.NewConflictError(constants.InvalidFieldsError, causes)
+		cause := er.NewCause("email", constants.EmailAlreadyTakenError)
+		restErr := er.NewConflictError(constants.InvalidFieldsError, []er.Cause{*cause})
 		c.JSON(http.StatusConflict, restErr)
 		return
 	}
@@ -58,38 +55,44 @@ func (cuc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
 	})
 
 	if len(createUserUseCaseErrs) > 0 {
-		var causes = []errors.Cause{}
-
-		for _, err := range createUserUseCaseErrs {
-			switch err.Error() {
-			case constants.InvalidEmailError:
-				cause := errors.Cause{Field: "email", Message: constants.InvalidEmailError}
-				causes = append(causes, cause)
-			case constants.NotContainMinimumCaracteresPasswordError:
-				cause := errors.Cause{Field: "password", Message: constants.NotContainMinimumCaracteresPasswordError}
-				causes = append(causes, cause)
-			case constants.NotContainUpperCaseCharacterePasswordError:
-				cause := errors.Cause{Field: "password", Message: constants.NotContainUpperCaseCharacterePasswordError}
-				causes = append(causes, cause)
-			case constants.NotContainSpecialCharacterePasswordError:
-				cause := errors.Cause{Field: "password", Message: constants.NotContainSpecialCharacterePasswordError}
-				causes = append(causes, cause)
-			case constants.InvalidRoleError:
-				cause := errors.Cause{Field: "role", Message: constants.InvalidRoleError}
-				causes = append(causes, cause)
-			}
-		}
+		causes := handleSignInErrorCauses(createUserUseCaseErrs)
 
 		if len(causes) > 0 {
-			restErr := errors.NewBadRequestError(constants.OccurredSameErrorsError, causes)
+			restErr := er.NewBadRequestError(constants.OccurredSameErrorsError, causes)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
 
-		restErr := errors.NewInternalServerError(constants.UnexpectedError)
+		restErr := er.NewInternalServerError(constants.UnexpectedError)
 		c.JSON(restErr.Code, restErr)
 		return
 	}
 
 	c.JSON(http.StatusNoContent, nil)
+}
+
+func handleSignUpErrorCauses(errs []error) []er.Cause {
+	var causes = []er.Cause{}
+
+	for _, err := range errs {
+		switch err.Error() {
+		case constants.InvalidEmailError:
+			cause := er.Cause{Field: "email", Message: constants.InvalidEmailError}
+			causes = append(causes, cause)
+		case constants.NotContainMinimumCaracteresPasswordError:
+			cause := er.Cause{Field: "password", Message: constants.NotContainMinimumCaracteresPasswordError}
+			causes = append(causes, cause)
+		case constants.NotContainUpperCaseCharacterePasswordError:
+			cause := er.Cause{Field: "password", Message: constants.NotContainUpperCaseCharacterePasswordError}
+			causes = append(causes, cause)
+		case constants.NotContainSpecialCharacterePasswordError:
+			cause := er.Cause{Field: "password", Message: constants.NotContainSpecialCharacterePasswordError}
+			causes = append(causes, cause)
+		case constants.InvalidRoleError:
+			cause := er.Cause{Field: "role", Message: constants.InvalidRoleError}
+			causes = append(causes, cause)
+		}
+	}
+
+	return causes
 }

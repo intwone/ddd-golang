@@ -9,7 +9,7 @@ import (
 	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/presentation/dtos"
-	"github.com/intwone/ddd-golang/internal/presentation/errors"
+	er "github.com/intwone/ddd-golang/internal/presentation/errors"
 	"github.com/intwone/ddd-golang/internal/presentation/mappers"
 )
 
@@ -30,12 +30,12 @@ func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
 
 	if err != nil {
 		if strings.Contains(err.Error(), constants.NoRowsFound) {
-			restErr := errors.NewNotFoundError(constants.QuestionNotFoundError)
+			restErr := er.NewNotFoundError(constants.QuestionNotFoundError)
 			c.JSON(restErr.Code, restErr)
 			return
 		}
 
-		restErr := errors.NewInternalServerError(err.Error())
+		restErr := er.NewInternalServerError(err.Error())
 		c.JSON(restErr.Code, restErr)
 		return
 	}
