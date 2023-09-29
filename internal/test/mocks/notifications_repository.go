@@ -49,10 +49,10 @@ func (mr *MockNotificationsRepositoryInterfaceMockRecorder) Create(notification 
 }
 
 // GetByID mocks base method.
-func (m *MockNotificationsRepositoryInterface) GetByID(id string) (enterprise.Notification, error) {
+func (m *MockNotificationsRepositoryInterface) GetByID(id string) (*enterprise.Notification, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
-	ret0, _ := ret[0].(enterprise.Notification)
+	ret0, _ := ret[0].(*enterprise.Notification)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

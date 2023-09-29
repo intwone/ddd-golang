@@ -2,30 +2,32 @@ package constants
 
 // Database
 const (
-	NoRowsFound = "no rows in result set"
+	NoRowsFound = "sql: no rows in result set"
 )
 
 // Email
 const (
-	InvalidEmailError      = "invalid email"
-	EmailAlreadyTakenError = "email already taken"
+	InvalidEmailError             = "invalid email"
+	EmailAlreadyTakenError        = "already taken"
+	EmailOrPasswordIncorrectError = "email or password incorrect"
 )
 
-// UUiD
+// UUID
 const (
 	InvalidUUIDError = "invalid uuid"
 )
 
 // Password
 const (
-	NotContainMinimumCaracteresPasswordError   = "the password must contain at least eight characters long"
-	NotContainUpperCaseCharacterePasswordError = "the password must contain at least one uppercase character"
-	NotContainSpecialCharacterePasswordError   = "the password must contain at least one special character"
+	NotContainMinimumCaracteresPasswordError   = "must contain at least eight characters long"
+	NotContainUpperCaseCharacterePasswordError = "must contain at least one uppercase character"
+	NotContainSpecialCharacterePasswordError   = "must contain at least one special character"
+	PasswordAreNotTheSame                      = "password are not the same"
 )
 
 // Role
 const (
-	InvalidRoleError = "role must be student or instructor"
+	InvalidRoleError = "must be student or instructor"
 )
 
 // Question
@@ -35,5 +37,12 @@ const (
 
 // Other
 const (
-	NotAllowedError = "not allowed"
+	NotAllowedError         = "not allowed"
+	UnexpectedError         = "unexpected error"
+	InvalidFieldTypeError   = "invalid field type"
+	InvalidFieldsError      = "invalid fields"
+	ConvertFieldsError      = "convert fields error"
+	OccurredSameErrorsError = "ocurred same errors"
+	GenerateHashError       = "error to generate hash"
+	UnMarshalJSONError      = "unmarshal json error"
 )

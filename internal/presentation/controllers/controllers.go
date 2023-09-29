@@ -8,4 +8,5 @@ type QuestionControllers struct {
 
 type UserControllers struct {
 	SignUpController *DefaultSignUpControllerInterface
+	SignInController *DefaultSignInControllerInterface
 }

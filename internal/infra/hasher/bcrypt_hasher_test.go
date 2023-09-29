@@ -1,7 +1,6 @@
 package hasher_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/intwone/ddd-golang/internal/infra/hasher"
@@ -19,8 +18,6 @@ func TestBcryptHasher_Hash(t *testing.T) {
 	t.Run("should return true when the comparison of values ​​is true", func(t *testing.T) {
 		value := "test123"
 		valueHashed, _ := hasher.NewBcryptHasher().Hash(value)
-
-		fmt.Println(*valueHashed)
 
 		result := hasher.NewBcryptHasher().Compare(value, *valueHashed)
 

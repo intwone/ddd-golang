@@ -1,6 +1,9 @@
 package hasher
 
 import (
+	"errors"
+
+	"github.com/intwone/ddd-golang/internal/constants"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -14,7 +17,7 @@ func (b *BcryptHasher) Hash(value string) (*string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(value), bcrypt.DefaultCost)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.New(constants.GenerateHashError)
 	}
 
 	hashedString := string(hashed)

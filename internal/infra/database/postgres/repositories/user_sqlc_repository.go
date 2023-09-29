@@ -26,15 +26,15 @@ func (r *UserSQLCRepository) GetByEmail(email string) (*enterprise.User, error) 
 		return nil, err
 	}
 
-	user, err := enterprise.NewUser(
+	user, errs := enterprise.NewUser(
 		result.Name,
 		result.Email,
 		result.Password,
 		string(result.Role),
 	)
 
-	if err != nil {
-		return nil, err
+	if len(errs) > 0 {
+		return nil, errs[0]
 	}
 
 	return user, nil

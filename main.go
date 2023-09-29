@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
+	"github.com/intwone/ddd-golang/internal/infra/cryptography"
 	"github.com/intwone/ddd-golang/internal/infra/database/postgres/repositories"
 	s "github.com/intwone/ddd-golang/internal/infra/database/sqlc"
 	"github.com/intwone/ddd-golang/internal/infra/hasher"
@@ -31,6 +32,14 @@ func main() {
 
 	router := gin.Default()
 
+	// Hasher
+	bcryptHasher := hasher.NewBcryptHasher()
+
+	// Cryptography
+	secret := os.Getenv("JWT_SECRET")
+	secretByte := []byte(secret)
+	jwtCryptography := cryptography.NewJWTCryptography(secretByte)
+
 	// Question
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
 	getQuestionBySlugUseCase := uc.NewDefaulGetQuestionBySlugUseCase(questionSQLCRepository)
@@ -46,17 +55,17 @@ func main() {
 		DeleteQuestionByIDController: deleteQuestionByIDController,
 	}
 
-	// Hasher
-	bcryptHasher := hasher.NewBcryptHasher()
-
 	// User
 	userSQLCRepository := repositories.NewUserSQLCRepository(dt)
 	createUserUseCase := uc.NewDefaultCreateUserUseCase(userSQLCRepository, bcryptHasher)
 	getUserByEmailUseCase := uc.NewDefaulGetUserByEmailUseCase(userSQLCRepository)
 	signUpController := ctrl.NewDefaultSignUpController(createUserUseCase, getUserByEmailUseCase)
+	authenticateUseCase := uc.NewDefaulAuthenticateUseCase(userSQLCRepository, bcryptHasher, jwtCryptography)
+	signInController := ctrl.NewDefaultSignInController(authenticateUseCase)
 
 	userControllers := ctrl.UserControllers{
 		SignUpController: signUpController,
+		SignInController: signInController,
 	}
 
 	routes.SetupQuestionRoutes(router, questionControllers)

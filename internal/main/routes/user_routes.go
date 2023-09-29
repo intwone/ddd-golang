@@ -8,4 +8,5 @@ import (
 func SetupUserRoutes(r *gin.Engine, controllers ctrl.UserControllers) {
 	userGroup := r.Group("/api/users")
 	userGroup.POST("/sign-up", controllers.SignUpController.Handle)
+	userGroup.POST("/sign-in", controllers.SignInController.Handle)
 }
