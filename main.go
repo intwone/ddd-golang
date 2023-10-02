@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/intwone/ddd-golang/internal/constants"
 	uc "github.com/intwone/ddd-golang/internal/domain/forum/application/use_cases"
 	"github.com/intwone/ddd-golang/internal/infra/cryptography"
 	"github.com/intwone/ddd-golang/internal/infra/database/postgres/repositories"
@@ -20,7 +21,7 @@ import (
 func main() {
 	err := godotenv.Load()
 
-	db, err := sql.Open(os.Getenv("DATABASE_DIALECT"), os.Getenv("DATABASE_URL"))
+	db, err := sql.Open(os.Getenv(constants.DATABASE_DIALECT), os.Getenv(constants.DATABASE_URL))
 
 	if err != nil {
 		log.Fatal(err)
@@ -36,9 +37,8 @@ func main() {
 	bcryptHasher := hasher.NewBcryptHasher()
 
 	// Cryptography
-	secret := os.Getenv("JWT_SECRET")
-	secretByte := []byte(secret)
-	jwtCryptography := cryptography.NewJWTCryptography(secretByte)
+	secret := os.Getenv(constants.JWT_SECRET)
+	jwtCryptography := cryptography.NewJWTCryptography(secret)
 
 	// Question
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
@@ -48,11 +48,14 @@ func main() {
 	createQuestionController := ctrl.NewDefaultCreateQuestionController(createQuestionUseCase)
 	deleteQuestionByIDUseCase := uc.NewDefaultDeleteQuestionByIDUseCase(questionSQLCRepository)
 	deleteQuestionByIDController := ctrl.NewDefaultDeleteQuestionByIDController(deleteQuestionByIDUseCase)
+	getRecentQuestionsUseCase := uc.NewDefaulGetRecentQuestionsUseCase(questionSQLCRepository)
+	getRecentQuestionsController := ctrl.NewDefaultGetRecentQuestionsController(getRecentQuestionsUseCase)
 
 	questionControllers := ctrl.QuestionControllers{
 		CreateQuestionController:     createQuestionController,
 		GetQuestionBySlugController:  getQuestionBySlugController,
 		DeleteQuestionByIDController: deleteQuestionByIDController,
+		GetRecentQuestionsController: getRecentQuestionsController,
 	}
 
 	// User
@@ -68,7 +71,7 @@ func main() {
 		SignInController: signInController,
 	}
 
-	routes.SetupQuestionRoutes(router, questionControllers)
+	routes.SetupQuestionRoutes(router, questionControllers, jwtCryptography)
 	routes.SetupUserRoutes(router, userControllers)
 
 	if err := router.Run(":8080"); err != nil {

@@ -58,9 +58,9 @@ func (q *Queries) DeleteQuestionByID(ctx context.Context, arg DeleteQuestionByID
 
 const getManyQuestionRecent = `-- name: GetManyQuestionRecent :many
 select question_id, author_id, best_answer_id, slug, title, content, is_active, created_at, updated_at from "questions"
-where created_at >= now() - INTERVAL '3 days' 
+where created_at >= now() - INTERVAL '1 days' 
 order by created_at desc 
-limit 10
+limit 20
 offset $1
 `
 

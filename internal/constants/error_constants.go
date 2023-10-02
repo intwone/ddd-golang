@@ -35,6 +35,13 @@ const (
 	QuestionNotFoundError = "question not found"
 )
 
+// Token
+const (
+	InvalidTokenError    = "invalid token"
+	TokenClaimsError     = "token claims error"
+	FieldNotFoundOnToken = "field not found on token"
+)
+
 // Other
 const (
 	NotAllowedError         = "not allowed"
@@ -45,4 +52,5 @@ const (
 	OccurredSameErrorsError = "ocurred same errors"
 	GenerateHashError       = "error to generate hash"
 	UnMarshalJSONError      = "unmarshal json error"
+	InvalidQueryParam       = "invalid query params"
 )

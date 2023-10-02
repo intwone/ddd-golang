@@ -31,6 +31,7 @@ func (r *UserSQLCRepository) GetByEmail(email string) (*enterprise.User, error) 
 		result.Email,
 		result.Password,
 		string(result.Role),
+		result.UserID.String(),
 	)
 
 	if len(errs) > 0 {

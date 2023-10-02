@@ -23,17 +23,18 @@ func NewDefaultDeleteQuestionByIDController(deleteQuestionByIDUseCase uc.DeleteQ
 }
 
 func (dqc *DefaultDeleteQuestionByIDControllerInterface) Handle(c *gin.Context) {
-	id := c.Param("id")
+	questionID := c.Param("questionID")
 
-	if _, err := uuid.Parse(id); err != nil {
+	userID := c.MustGet("userID")
+
+	if _, err := uuid.Parse(questionID); err != nil {
 		cause := er.NewCause("id", constants.InvalidUUIDError)
 		restErr := er.NewBadRequestError(constants.OccurredSameErrorsError, []er.Cause{*cause})
 		c.JSON(restErr.Code, restErr)
 		return
 	}
 
-	// TODO: Pegar o userID através do header para colocar no input.AuthorID do usecase
-	err := dqc.DeleteQuestionByIDUseCase.Execute(uc.DeleteQuestionByIDUseCaseInput{ID: id})
+	err := dqc.DeleteQuestionByIDUseCase.Execute(uc.DeleteQuestionByIDUseCaseInput{ID: questionID, AuthorID: userID.(string)})
 
 	if err != nil {
 		if strings.Contains(err.Error(), constants.NoRowsFound) {

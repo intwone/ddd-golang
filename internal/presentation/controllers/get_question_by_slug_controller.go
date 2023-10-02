@@ -24,7 +24,7 @@ func NewDefaultGetQuestionBySlugController(getQuestionBySlugUseCase uc.GetQuesti
 }
 
 func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
-	slug := c.Param("slug")
+	slug := c.Param("questionSlug")
 
 	question, err := cqc.GetQuestionBySlugUseCase.Execute(uc.GetQuestionBySlugUseCaseInput{Slug: slug})
 
@@ -40,7 +40,7 @@ func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
 		return
 	}
 
-	questionMapped := mappers.QuestionDTOMapper(question)
+	questionMapped := mappers.QuestionDTOMapper(*question)
 
 	c.JSON(http.StatusOK, dtos.ResponseDTO{"data": questionMapped})
 }

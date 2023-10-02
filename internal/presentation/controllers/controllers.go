@@ -3,6 +3,7 @@ package controllers
 type QuestionControllers struct {
 	CreateQuestionController     *DefaultCreateQuestionControllerInterface
 	GetQuestionBySlugController  *DefaultGetQuestionBySlugControllerInterface
+	GetRecentQuestionsController *DefaultGetRecentQuestionsControllerInterface
 	DeleteQuestionByIDController *DefaultDeleteQuestionByIDControllerInterface
 }
 

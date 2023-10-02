@@ -1,0 +1,7 @@
+package constants
+
+const (
+	DATABASE_DIALECT = "DATABASE_DIALECT"
+	DATABASE_URL     = "DATABASE_URL"
+	JWT_SECRET       = "JWT_SECRET"
+)

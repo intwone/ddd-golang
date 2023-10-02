@@ -6,13 +6,14 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/intwone/ddd-golang/internal/constants"
 )
 
 type JWTCryptography struct {
-	SecretKey []byte
+	SecretKey string
 }
 
-func NewJWTCryptography(secretKey []byte) CryptographyInterface {
+func NewJWTCryptography(secretKey string) CryptographyInterface {
 	return &JWTCryptography{
 		SecretKey: secretKey,
 	}
@@ -36,12 +37,14 @@ func (c *JWTCryptography) Encrypt(value string) (*string, error) {
 }
 
 func (c *JWTCryptography) Decrypt(token string) (*string, error) {
-	parsedToken, err := jwt.Parse(removeBearer(token), func(t *jwt.Token) (interface{}, error) {
+	value := removeBearer(token)
+
+	parsedToken, err := jwt.Parse(value, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); ok {
 			return []byte(c.SecretKey), nil
 		}
 
-		return nil, errors.New("error to parse token")
+		return nil, errors.New(constants.InvalidTokenError)
 	})
 
 	if err != nil {
@@ -51,13 +54,13 @@ func (c *JWTCryptography) Decrypt(token string) (*string, error) {
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 
 	if !ok || !parsedToken.Valid {
-		return nil, errors.New("error to cast parsed token claims to jwt MapClaims")
+		return nil, errors.New(constants.TokenClaimsError)
 	}
 
 	userID, ok := claims["user_id"].(string)
 
 	if !ok {
-		return nil, errors.New("user_id not found in token claims")
+		return nil, errors.New(constants.FieldNotFoundOnToken)
 	}
 
 	return &userID, nil

@@ -10,7 +10,7 @@ type GetRecentQuestionsUseCaseInput struct {
 }
 
 type GetRecentQuestionsUseCaseInterface interface {
-	Execute(input GetRecentQuestionsUseCaseInput) (enterprise.Question, error)
+	Execute(input GetRecentQuestionsUseCaseInput) (*[]enterprise.Question, error)
 }
 
 type DefaultGetRecentQuestionsUseCase struct {

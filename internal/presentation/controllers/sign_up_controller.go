@@ -79,15 +79,19 @@ func handleSignUpErrorCauses(errs []error) []er.Cause {
 		case constants.InvalidEmailError:
 			cause := er.Cause{Field: "email", Message: constants.InvalidEmailError}
 			causes = append(causes, cause)
+
 		case constants.NotContainMinimumCaracteresPasswordError:
 			cause := er.Cause{Field: "password", Message: constants.NotContainMinimumCaracteresPasswordError}
 			causes = append(causes, cause)
+
 		case constants.NotContainUpperCaseCharacterePasswordError:
 			cause := er.Cause{Field: "password", Message: constants.NotContainUpperCaseCharacterePasswordError}
 			causes = append(causes, cause)
+
 		case constants.NotContainSpecialCharacterePasswordError:
 			cause := er.Cause{Field: "password", Message: constants.NotContainSpecialCharacterePasswordError}
 			causes = append(causes, cause)
+
 		case constants.InvalidRoleError:
 			cause := er.Cause{Field: "role", Message: constants.InvalidRoleError}
 			causes = append(causes, cause)

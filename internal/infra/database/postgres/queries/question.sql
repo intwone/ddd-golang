@@ -6,9 +6,9 @@ select * from "questions" where question_id = $1 limit 1;
 
 -- name: GetManyQuestionRecent :many
 select * from "questions"
-where created_at >= now() - INTERVAL '3 days' 
+where created_at >= now() - INTERVAL '1 days' 
 order by created_at desc 
-limit 10
+limit 20
 offset $1; 
 
 -- name: CreateQuestion :exec

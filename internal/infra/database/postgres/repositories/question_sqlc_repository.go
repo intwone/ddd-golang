@@ -67,13 +67,46 @@ func (r *QuestionSQLCRepository) GetByID(id string) (*enterprise.Question, error
 		result.Content,
 		result.AuthorID.String(),
 		enterprise.QuestionOptionalParams{
+			ID:           result.QuestionID.String(),
 			BestAnswerID: result.BestAnswerID.UUID.String(),
 			Attachments:  *attachments,
 		}), nil
 }
 
 func (r *QuestionSQLCRepository) GetManyRecent(page int64) (*[]enterprise.Question, error) {
-	return nil, nil
+	questions, err := r.db.GetManyQuestionRecent(context.Background(), int32(page))
+
+	if err != nil {
+		return nil, err
+	}
+
+	var questionsEntity []enterprise.Question
+
+	attachments := enterprise.NewQuestionAttachmentsList([]interface{}{})
+
+	for i := 0; i < len(questions); i++ {
+		var bestAnswerID string
+
+		if questions[i].BestAnswerID.Valid {
+			bestAnswerID = questions[i].BestAnswerID.UUID.String()
+		} else {
+			bestAnswerID = ""
+		}
+
+		question := enterprise.NewQuestion(
+			questions[i].Title,
+			questions[i].Content,
+			questions[i].AuthorID.String(),
+			enterprise.QuestionOptionalParams{
+				ID:           questions[i].QuestionID.String(),
+				BestAnswerID: bestAnswerID,
+				Attachments:  *attachments,
+			})
+
+		questionsEntity = append(questionsEntity, *question)
+	}
+
+	return &questionsEntity, nil
 }
 
 func (r *QuestionSQLCRepository) Create(question *enterprise.Question) error {

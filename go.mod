@@ -45,6 +45,7 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.23.2
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gin-gonic/gin v1.9.1
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.1
 	github.com/gosimple/slug v1.13.1
 	github.com/joho/godotenv v1.5.1
