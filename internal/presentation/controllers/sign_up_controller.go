@@ -24,7 +24,7 @@ func NewDefaultSignUpController(createUserUseCase uc.CreateUserUseCaseInterface,
 	}
 }
 
-func (cuc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
+func (suc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
 	var signUpRequestDTO dtos.SignUpRequestDTO
 
 	jsonBindErr := c.ShouldBindJSON(&signUpRequestDTO)
@@ -36,7 +36,7 @@ func (cuc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
 		return
 	}
 
-	user, _ := cuc.GetUserByEmailUseCase.Execute(uc.GetUserByEmailUseCaseInput{
+	user, _ := suc.GetUserByEmailUseCase.Execute(uc.GetUserByEmailUseCaseInput{
 		Email: signUpRequestDTO.Email,
 	})
 
@@ -47,7 +47,7 @@ func (cuc *DefaultSignUpControllerInterface) Handle(c *gin.Context) {
 		return
 	}
 
-	_, createUserUseCaseErrs := cuc.CreateUserUseCase.Execute(uc.CreateUserUseCaseInput{
+	_, createUserUseCaseErrs := suc.CreateUserUseCase.Execute(uc.CreateUserUseCaseInput{
 		Name:     signUpRequestDTO.Name,
 		Email:    signUpRequestDTO.Email,
 		Password: signUpRequestDTO.Password,

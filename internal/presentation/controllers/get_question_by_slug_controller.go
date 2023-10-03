@@ -23,10 +23,10 @@ func NewDefaultGetQuestionBySlugController(getQuestionBySlugUseCase uc.GetQuesti
 	}
 }
 
-func (cqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
+func (gqc *DefaultGetQuestionBySlugControllerInterface) Handle(c *gin.Context) {
 	slug := c.Param("questionSlug")
 
-	question, err := cqc.GetQuestionBySlugUseCase.Execute(uc.GetQuestionBySlugUseCaseInput{Slug: slug})
+	question, err := gqc.GetQuestionBySlugUseCase.Execute(uc.GetQuestionBySlugUseCaseInput{Slug: slug})
 
 	if err != nil {
 		if strings.Contains(err.Error(), constants.NoRowsFound) {

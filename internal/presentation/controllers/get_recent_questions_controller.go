@@ -24,7 +24,7 @@ func NewDefaultGetRecentQuestionsController(getRecentQuestionsUseCase uc.GetRece
 	}
 }
 
-func (cqc *DefaultGetRecentQuestionsControllerInterface) Handle(c *gin.Context) {
+func (grqc *DefaultGetRecentQuestionsControllerInterface) Handle(c *gin.Context) {
 	page, err := strconv.ParseInt(c.Query("page"), 10, 64)
 
 	if err != nil {
@@ -36,7 +36,7 @@ func (cqc *DefaultGetRecentQuestionsControllerInterface) Handle(c *gin.Context) 
 
 	offset := (page - 1) * 20
 
-	questions, err := cqc.GetRecentQuestionsUseCase.Execute(uc.GetRecentQuestionsUseCaseInput{Page: offset})
+	questions, err := grqc.GetRecentQuestionsUseCase.Execute(uc.GetRecentQuestionsUseCaseInput{Page: offset})
 
 	if err != nil {
 		if strings.Contains(err.Error(), constants.NoRowsFound) {

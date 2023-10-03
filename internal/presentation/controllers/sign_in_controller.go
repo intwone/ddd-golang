@@ -22,7 +22,7 @@ func NewDefaultSignInController(authenticateUseCase uc.AuthenticateUseCaseInterf
 	}
 }
 
-func (ac *DefaultSignInControllerInterface) Handle(c *gin.Context) {
+func (sic *DefaultSignInControllerInterface) Handle(c *gin.Context) {
 	var SignInRequestDTO dtos.SignInRequestDTO
 
 	jsonBindErr := c.ShouldBindJSON(&SignInRequestDTO)
@@ -34,7 +34,7 @@ func (ac *DefaultSignInControllerInterface) Handle(c *gin.Context) {
 		return
 	}
 
-	token, useCaseErrs := ac.AuthenticateUseCase.Execute(uc.AuthenticateUseCaseInput{
+	token, useCaseErrs := sic.AuthenticateUseCase.Execute(uc.AuthenticateUseCaseInput{
 		Email:    SignInRequestDTO.Email,
 		Password: SignInRequestDTO.Password,
 	})
