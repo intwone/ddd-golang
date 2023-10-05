@@ -9,10 +9,10 @@ import (
 
 type Answer struct {
 	id          *vo.UniqueID
-	content     string
-	attachments *AnswerAttachmentsList
 	authorID    *vo.UniqueID
 	questionID  *vo.UniqueID
+	content     string
+	attachments *AnswerAttachmentsList
 	createdAt   time.Time
 	updatedAt   *time.Time
 }
@@ -53,6 +53,14 @@ func (a *Answer) GetID() string {
 	return a.id.ToStringUniqueID()
 }
 
+func (a *Answer) GetAuthorID() string {
+	return a.authorID.ToStringUniqueID()
+}
+
+func (a *Answer) GetQuestionID() string {
+	return a.questionID.ToStringUniqueID()
+}
+
 func (a *Answer) GetContent() string {
 	return a.content
 }
@@ -61,12 +69,12 @@ func (a *Answer) GetAttachments() AnswerAttachmentsList {
 	return *a.attachments
 }
 
-func (a *Answer) GetAuthorID() string {
-	return a.authorID.ToStringUniqueID()
+func (a *Answer) GetCreatedAt() time.Time {
+	return a.createdAt
 }
 
-func (a *Answer) GetQuestionID() string {
-	return a.questionID.ToStringUniqueID()
+func (a *Answer) GetUpdatedAt() *time.Time {
+	return a.updatedAt
 }
 
 func (a *Answer) GetExcerpt() string {

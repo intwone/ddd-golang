@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type QuestionDTO struct {
+type QuestionResponseDTO struct {
 	ID           string     `json:"question_id"`
 	AuthorID     string     `json:"author_id"`
 	BestAnswerID string     `json:"best_answer_id,omitempty"`

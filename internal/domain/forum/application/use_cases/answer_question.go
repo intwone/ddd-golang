@@ -6,14 +6,14 @@ import (
 )
 
 type AnswerQuestionUseCaseInput struct {
-	InstructorID   string
+	AuthorID       string
 	QuestionID     string
 	AttachmentsIDs []string
 	Content        string
 }
 
 type AnswerQuestionUseCaseInterface interface {
-	Execute(input AnswerQuestionUseCaseInput) (enterprise.Answer, error)
+	Execute(input AnswerQuestionUseCaseInput) (*enterprise.Answer, error)
 }
 
 type DefaultAnswerQuestionUseCase struct {
@@ -27,7 +27,7 @@ func NewDefaultAnswerQuestionUseCase(answersRepository repositories.AnswerReposi
 }
 
 func (uc *DefaultAnswerQuestionUseCase) Execute(input AnswerQuestionUseCaseInput) (*enterprise.Answer, error) {
-	newAnswer := enterprise.NewAnswer(input.Content, input.InstructorID, input.QuestionID)
+	newAnswer := enterprise.NewAnswer(input.Content, input.AuthorID, input.QuestionID)
 
 	attachments := make([]*enterprise.AnswerAttachment, len(input.AttachmentsIDs))
 

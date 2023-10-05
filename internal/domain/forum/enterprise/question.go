@@ -87,8 +87,8 @@ func (q *Question) GetBestAnswerID() string {
 	return q.bestAnswerID.ToStringUniqueID()
 }
 
-func (q *Question) GetCreatedAt() *time.Time {
-	return &q.createdAt
+func (q *Question) GetCreatedAt() time.Time {
+	return q.createdAt
 }
 
 func (q *Question) GetUpdatedAt() *time.Time {

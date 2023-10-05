@@ -19,9 +19,9 @@ func TestAnswerQuestionUseCase_Execute(t *testing.T) {
 		useCase := uc.NewDefaultAnswerQuestionUseCase(repo)
 
 		input := uc.AnswerQuestionUseCaseInput{
-			InstructorID: "1",
-			QuestionID:   "1",
-			Content:      "Content",
+			AuthorID:   "1",
+			QuestionID: "1",
+			Content:    "Content",
 		}
 
 		result, err := useCase.Execute(input)

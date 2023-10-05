@@ -1,5 +1,9 @@
 package controllers
 
+type AnswerControllers struct {
+	AnswerQuestionController *DefaultAnswerQuestionControllerInterface
+}
+
 type QuestionControllers struct {
 	CreateQuestionController     *DefaultCreateQuestionControllerInterface
 	GetQuestionBySlugController  *DefaultGetQuestionBySlugControllerInterface

@@ -53,7 +53,7 @@ func (grqc *DefaultGetRecentQuestionsControllerInterface) Handle(c *gin.Context)
 	questionMapped := mappers.QuestionsDTOMapper(*questions)
 
 	if len(questionMapped) == 0 {
-		c.JSON(http.StatusOK, dtos.ResponseDTO{"data": []dtos.QuestionDTO{}})
+		c.JSON(http.StatusOK, dtos.ResponseDTO{"data": []dtos.QuestionResponseDTO{}})
 		return
 	}
 

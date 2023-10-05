@@ -40,6 +40,15 @@ func main() {
 	secret := os.Getenv(constants.JWT_SECRET)
 	jwtCryptography := cryptography.NewJWTCryptography(secret)
 
+	// Answer
+	answerSQLCRepository := repositories.NewAnswerSQLCRepository(dt)
+	answerQuestionUseCase := uc.NewDefaultAnswerQuestionUseCase(answerSQLCRepository)
+	answerQuestionController := ctrl.NewDefaultAnswerQuestionController(answerQuestionUseCase)
+
+	answerControllers := ctrl.AnswerControllers{
+		AnswerQuestionController: answerQuestionController,
+	}
+
 	// Question
 	questionSQLCRepository := repositories.NewQuestionSQLCRepository(dt)
 	getQuestionBySlugUseCase := uc.NewDefaulGetQuestionBySlugUseCase(questionSQLCRepository)
@@ -73,6 +82,7 @@ func main() {
 
 	routes.SetupQuestionRoutes(router, questionControllers, jwtCryptography)
 	routes.SetupUserRoutes(router, userControllers)
+	routes.SetupAnswerRoutes(router, answerControllers)
 
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
